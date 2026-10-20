@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptX-Ray Academy | Learn Hangul, Kana & Cyrillic Step-by-Step</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'Noto Sans JP', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        zinc: {
+                            850: '#1f1f24',
+                            925: '#131317',
+                            950: '#09090b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            transition: background-color 0.2s ease, color 0.2s ease;
+            overflow-x: hidden;
+        }
+        .dark body {
+            background-color: #09090b;
+            color: #f4f4f5;
+        }
+        html:not(.dark) body {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+        /* Page Transition Animation */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page-enter {
+            animation: fadeSlideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Card Hover Lift */
+        .hover-lift {
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Blur effect for self-testing romanization */
+        .self-test-blur {
+            filter: blur(6px);
+            opacity: 0.35;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .group:hover .self-test-blur, .self-test-blur:hover {
+            filter: blur(0px);
+            opacity: 1;
+        }
+
+        /* Memory Card Flip Styling */
+        .memory-card {
+            perspective: 1000px;
+        }
+        .memory-inner {
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .memory-card.flipped .memory-inner {
+            transform: rotateY(180deg);
+        }
+        .memory-front, .memory-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .memory-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Shake & Pop Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-7px); }
+            75% { transform: translateX(7px); }
+        }
+        .animate-shake { animation: shake 0.3s ease-in-out; }
+
+        @keyframes pop {
+            0% { transform: scale(0.92); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .animate-pop { animation: pop 0.25s ease-out; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+    <!-- ===================================================== -->
+    <!-- TOP HEADER: LANGUAGE SWITCHER, XP & THEME             -->
+    <!-- ===================================================== -->
+    <header class="sticky top-0 z-40 border-b border-zinc-200 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+            <!-- Brand -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-sky-500 via-indigo-500 to-fuchsia-500 p-[2px] shadow-md shadow-sky-500/10">
+                    <div class="w-full h-full bg-white dark:bg-zinc-950 rounded-[14px] flex items-center justify-center font-mono font-bold text-base tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-sky-500 to-fuchsia-500">
+                        한あ
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-base sm:text-lg tracking-tight text-zinc-900 dark:text-white">ScriptX-Ray</span>
+                        <span class="hidden sm:inline-block text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 font-semibold">Academy 2.0</span>
+                    </div>
+                    <p class="text-[11px] text-zinc-500 dark:text-zinc-400 hidden md:block">Step-by-step Alphabet, Vocabulary & Romanization Trainer</p>
+                </div>
+            </div>
+
+            <!-- Language Switcher Pills -->
+            <div class="flex items-center bg-zinc-100 dark:bg-zinc-900 p-1 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+                <button onclick="switchLanguage('ko')" data-lang="ko" class="lang-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all">
+                    <span>🇰🇷</span>
+                    <span>Korean</span>
+                </button>
+                <button onclick="switchLanguage('ja')" data-lang="ja" class="lang-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all">
+                    <span>🇯🇵</span>
+                    <span>Japanese</span>
+                </button>
+                <button onclick="switchLanguage('ru')" data-lang="ru" class="lang-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all">
+                    <span>🇷🇺</span>
+                    <span>Russian</span>
+                </button>
+            </div>
+
+            <!-- Right Status: XP Badge, Saved Notes Count, Theme Toggle -->
+            <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-600 dark:text-amber-400 text-xs font-mono font-bold" title="Earn XP by learning letters, words, and playing games!">
+                    <span>⚡</span>
+                    <span id="headerXpDisplay">0 XP</span>
+                </div>
+
+                <button onclick="navigateTo('notes')" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-all" title="Open My Study Notes">
+                    <span>📝</span>
+                    <span id="headerNotesCount">0 Notes</span>
+                </button>
+
+                <button onclick="toggleTheme()" class="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 transition-all" title="Toggle Dark/Light Mode">
+                    <svg id="themeIconSun" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="themeIconMoon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- PAGE-BY-PAGE NAVIGATION TABS                          -->
+        <!-- ===================================================== -->
+        <div class="border-t border-zinc-200/70 dark:border-zinc-800/60 bg-zinc-50/80 dark:bg-zinc-925/80">
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 flex items-center justify-between sm:justify-start gap-1 sm:gap-2 overflow-x-auto py-1.5 no-scrollbar">
+                <button onclick="navigateTo('home')" data-page="home" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all">
+                    <span>🏠</span>
+                    <span>1. Guided Path</span>
+                </button>
+                <button onclick="navigateTo('alphabet')" data-page="alphabet" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all">
+                    <span>🔤</span>
+                    <span>2. Alphabet Academy</span>
+                </button>
+                <button onclick="navigateTo('words')" data-page="words" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all">
+                    <span>📚</span>
+                    <span>3. Word Library</span>
+                </button>
+                <button onclick="navigateTo('arcade')" data-page="arcade" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all">
+                    <span>🎮</span>
+                    <span>4. Playable Arcade</span>
+                </button>
+                <button onclick="navigateTo('reader')" data-page="reader" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all">
+                    <span>🔬</span>
+                    <span>5. Smart Reader</span>
+                </button>
+                <button onclick="navigateTo('notes')" data-page="notes" class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all">
+                    <span>📝</span>
+                    <span>6. My Notes</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================================================== -->
+    <!-- MAIN PAGE CONTAINER (ONE UNCLUTTERED PAGE AT A TIME)  -->
+    <!-- ===================================================== -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+        <!-- ================================================= -->
+        <!-- PAGE 1: GUIDED PATH & DASHBOARD (HOME)            -->
+        <!-- ================================================= -->
+        <section id="page-home" class="page-view page-enter space-y-8">
+            <!-- Hero Welcome Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900 via-zinc-900 to-indigo-950 text-white p-6 sm:p-8 border border-zinc-800 shadow-xl">
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-sky-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-7 space-y-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-mono">
+                            <span id="homeHeroFlag">🇰🇷</span>
+                            <span id="homeHeroLangTag">KOREAN HANGUL TRACK</span>
+                        </div>
+                        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight" id="homeHeroTitle">
+                            Master Hangul & Real Korean Pronunciation
+                        </h1>
+                        <p class="text-sm sm:text-base text-zinc-300 max-w-2xl leading-relaxed" id="homeHeroDesc">
+                            Follow the step-by-step path below. Learn letters with visual mnemonics, build real vocabulary across 6 categories, play arcade games, and keep your own personal study notes.
+                        </p>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <button onclick="navigateTo('alphabet')" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-sm transition-all shadow-lg shadow-sky-500/20">
+                                Start Alphabet Academy →
+                            </button>
+                            <button onclick="navigateTo('arcade')" class="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-sm border border-zinc-700 transition-all">
+                                🎮 Play Mini-Games
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Progress Summary Cards -->
+                    <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                        <div class="bg-zinc-950/70 border border-zinc-800/90 p-4 rounded-2xl">
+                            <div class="text-xs font-mono uppercase text-zinc-400">Alphabet Mastered</div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1" id="homeAlphaStat">0 / 24</div>
+                            <div class="w-full h-2 bg-zinc-800 rounded-full overflow-hidden mt-3">
+                                <div id="homeAlphaBar" class="h-full bg-emerald-400 transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-zinc-950/70 border border-zinc-800/90 p-4 rounded-2xl">
+                            <div class="text-xs font-mono uppercase text-zinc-400">Words Learned</div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-sky-400 mt-1" id="homeWordsStat">0 / 48</div>
+                            <div class="w-full h-2 bg-zinc-800 rounded-full overflow-hidden mt-3">
+                                <div id="homeWordsBar" class="h-full bg-sky-400 transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="col-span-2 bg-zinc-950/70 border border-zinc-800/90 p-4 rounded-2xl flex items-center justify-between">
+                            <div>
+                                <div class="text-xs font-mono uppercase text-zinc-400">Your Learner Rank</div>
+                                <div class="text-base font-bold text-amber-400 mt-0.5" id="homeRankTitle">Level 1 • Script Explorer</div>
+                            </div>
+                            <button onclick="navigateTo('notes')" class="px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-zinc-200 transition-colors">
+                                View My Notes 📝
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step-by-Step Guided Roadmap -->
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-zinc-900 dark:text-white">Step-by-Step Learning Roadmap</h2>
+                        <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">Click any step to launch an interactive bite-sized lesson or jump straight into practice</p>
+                    </div>
+                </div>
+
+                <div id="homeRoadmapGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Populated dynamically per language -->
+                </div>
+            </div>
+
+            <!-- Quick Word of the Day & Quick Note Widget -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Featured Word Card -->
+                <div class="lg:col-span-7 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-md bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 font-semibold">✨ Spotlight Expression</span>
+                        <button onclick="renderSpotlightWord()" class="text-xs text-zinc-500 hover:text-sky-500 font-medium transition-colors">🎲 Shuffle Word</button>
+                    </div>
+                    <div id="spotlightContainer" class="my-2">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Quick Scratchpad Note Widget -->
+                <div class="lg:col-span-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-base text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span>📌 Quick Study Note</span>
+                            </h3>
+                            <span class="text-xs text-zinc-400">Auto-saves to Page 6</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-3">Jot down a pronunciation trick, grammar rule, or word you don't want to forget:</p>
+                        <input id="quickNoteTitle" type="text" placeholder="Note title (e.g., Batchim trick for ㅂ)" class="w-full mb-2 px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-sky-500">
+                        <textarea id="quickNoteBody" rows="3" placeholder="Write your personal note or mnemonic here..." class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-sky-500 resize-none"></textarea>
+                    </div>
+                    <button onclick="saveQuickNote()" class="mt-3 w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs uppercase tracking-wider transition-all">
+                        + Save to My Notebook
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================= -->
+        <!-- PAGE 2: INTERACTIVE ALPHABET ACADEMY              -->
+        <!-- ================================================= -->
+        <section id="page-alphabet" class="page-view hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5">
+                <div>
+                    <h2 class="text-xl font-bold text-zinc-900 dark:text-white" id="alphaPageTitle">Korean Hangul Alphabet Academy</h2>
+                    <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">Click any character card to hear native audio, see its visual mnemonic, and save personal notes.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="markAllCurrentGroupKnown()" class="px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 text-xs font-semibold transition-all">
+                        ✓ Mark Group as Learned
+                    </button>
+                    <button onclick="navigateTo('arcade')" class="px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 text-xs font-bold transition-all">
+                        🎮 Quiz These Letters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sub-Group Category Filter Tabs -->
+            <div id="alphaGroupTabs" class="flex flex-wrap gap-2">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- Main Grid + Detail Inspector Split -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Character Grid (7 Cols) -->
+                <div id="alphaCharGrid" class="lg:col-span-7 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Selected Character Deep-Dive Card (5 Cols) -->
+                <div class="lg:col-span-5 lg:sticky lg:top-32 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-xl" id="alphaDetailPanel">
+                    <!-- Populated when clicking a character -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================= -->
+        <!-- PAGE 3: RICH WORD LIBRARY (CATEGORIZED VOCAB)     -->
+        <!-- ================================================= -->
+        <section id="page-words" class="page-view hidden space-y-6">
+            <!-- Header & Search / Filter Controls -->
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-zinc-900 dark:text-white" id="wordsPageTitle">Vocabulary & Phrase Deck</h2>
+                        <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">Beyond essentials: explore Food, Pop Culture & Slang, Travel, Emotions, Numbers, and Action Verbs.</p>
+                    </div>
+
+                    <!-- Self-Test Toggle & Search -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <label class="flex items-center gap-2 cursor-pointer select-none bg-zinc-100 dark:bg-zinc-950 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                            <input type="checkbox" id="vocabSelfTestToggle" onchange="renderWordLibrary()" class="sr-only peer">
+                            <div class="w-8 h-4 bg-zinc-400 dark:bg-zinc-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all relative peer-checked:bg-sky-500"></div>
+                            <span class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Hide Romaji (Self-Test)</span>
+                        </label>
+
+                        <div class="relative flex-1 sm:w-60">
+                            <input type="text" id="vocabSearchInput" oninput="renderWordLibrary()" placeholder="Search English, script, romaji..."
+                                class="w-full pl-9 pr-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-sky-500">
+                            <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div id="vocabCategoryPills" class="flex flex-wrap gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Word Cards Grid -->
+            <div id="vocabCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- ================================================= -->
+        <!-- PAGE 4: PLAYABLE ARCADE (3 MINI-GAMES)            -->
+        <!-- ================================================= -->
+        <section id="page-arcade" class="page-view hidden space-y-6">
+            <!-- Arcade Top Selector Bar -->
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <!-- 3 Game Mode Buttons -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="selectArcadeGame('memory')" id="gameTab-memory" class="arcade-tab flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all">
+                        <span>🃏</span>
+                        <span>1. Memory Match</span>
+                    </button>
+                    <button onclick="selectArcadeGame('blitz')" id="gameTab-blitz" class="arcade-tab flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all">
+                        <span>⚡</span>
+                        <span>2. Speed Blitz Survival</span>
+                    </button>
+                    <button onclick="selectArcadeGame('builder')" id="gameTab-builder" class="arcade-tab flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all">
+                        <span>🧩</span>
+                        <span>3. Word Tile Builder</span>
+                    </button>
+                </div>
+
+                <!-- Deck Source Selector (Alphabet vs Vocabulary Category) -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="text-xs font-mono uppercase text-zinc-400">Practice Deck:</span>
+                    <select id="arcadeDeckSelect" onchange="restartCurrentArcadeGame()" class="bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white focus:outline-none focus:border-sky-500">
+                        <option value="alphabet">🔤 Alphabet Characters</option>
+                        <option value="all_words">📚 All Vocabulary Words</option>
+                        <option value="Essentials">👋 Essentials & Greetings</option>
+                        <option value="Food & Cafe">🍜 Food & Cafe</option>
+                        <option value="Pop Culture & Slang">✨ Pop Culture & Slang</option>
+                        <option value="Travel & Places">✈️ Travel & Places</option>
+                        <option value="Feelings & Vibes">💖 Feelings & Vibes</option>
+                        <option value="Numbers & Actions">🔢 Numbers & Actions</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- GAME 1: MEMORY MATCH BOARD -->
+            <div id="arcadeGame-memory" class="arcade-stage bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-xl">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-100 dark:border-zinc-800">
+                    <div>
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white">🃏 Script ↔ Sound Memory Match</h3>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400">Flip two cards to match the native character/word with its romanization & meaning.</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-xs font-mono">Moves: <span id="memoryMoves" class="font-bold text-sky-500">0</span></div>
+                        <div class="text-xs font-mono">Pairs: <span id="memoryPairs" class="font-bold text-emerald-500">0 / 6</span></div>
+                        <button onclick="initMemoryGame()" class="px-3.5 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-xs transition-all">
+                            🔄 New Board
+                        </button>
+                    </div>
+                </div>
+
+                <div id="memoryGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
+                    <!-- 12 Memory Cards rendered via JS -->
+                </div>
+            </div>
+
+            <!-- GAME 2: SPEED BLITZ SURVIVAL -->
+            <div id="arcadeGame-blitz" class="arcade-stage hidden bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-xl max-w-2xl mx-auto">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2 text-lg" id="blitzHearts">❤️❤️❤️</div>
+                    <div class="flex items-center gap-4 font-mono text-sm">
+                        <span class="text-amber-500 font-bold" id="blitzCombo">0x Streak 🔥</span>
+                        <span class="text-sky-500 font-bold" id="blitzScore">Score: 0</span>
+                    </div>
+                </div>
+
+                <!-- Timer Bar -->
+                <div class="w-full h-2.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden mb-6">
+                    <div id="blitzTimerBar" class="h-full bg-gradient-to-r from-emerald-400 via-sky-500 to-rose-500 transition-all duration-100" style="width: 100%"></div>
+                </div>
+
+                <!-- Prompt Stage -->
+                <div id="blitzStageCard" class="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 text-center mb-6 relative">
+                    <button onclick="speakBlitzCurrent()" class="absolute top-4 right-4 p-2 rounded-xl bg-zinc-200/70 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 hover:text-sky-400">
+                        🔊
+                    </button>
+                    <div class="text-xs font-mono uppercase text-zinc-400 mb-2" id="blitzPromptSub">What is the sound / meaning of:</div>
+                    <div class="text-5xl sm:text-6xl font-extrabold text-zinc-900 dark:text-white my-2 select-none" id="blitzPromptChar">한</div>
+                    <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-2" id="blitzPromptHint">Choose the correct match before time runs out!</div>
+                </div>
+
+                <!-- 4 Multiple Choice Buttons -->
+                <div id="blitzChoicesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- Rendered via JS -->
+                </div>
+
+                <div class="mt-6 text-center">
+                    <button onclick="startBlitzGame()" id="blitzStartBtn" class="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-sm transition-all">
+                        ▶ Start / Restart Blitz
+                    </button>
+                </div>
+            </div>
+
+            <!-- GAME 3: WORD & SYLLABLE BUILDER -->
+            <div id="arcadeGame-builder" class="arcade-stage hidden bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-xl max-w-2xl mx-auto">
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-zinc-100 dark:border-zinc-800">
+                    <div>
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white">🧩 Native Word Tile Builder</h3>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400">Tap the scrambled native characters in the right order to build the word!</p>
+                    </div>
+                    <button onclick="nextBuilderPuzzle()" class="px-3.5 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-xs font-semibold">
+                        Skip Word →
+                    </button>
+                </div>
+
+                <!-- Target Word Meaning & Audio -->
+                <div class="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 text-center mb-6">
+                    <div class="text-xs font-mono uppercase text-sky-500 font-bold" id="builderCategoryTag">ESSENTIALS</div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white mt-1" id="builderEnglishPrompt">"Hello (Polite)"</div>
+                    <div class="text-sm font-mono text-fuchsia-500 mt-1" id="builderRomajiPrompt">/annyeonghaseyo/</div>
+                    <button onclick="speakBuilderTarget()" class="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500/10 text-sky-500 text-xs font-semibold hover:bg-sky-500/20">
+                        🔊 Listen to Word
+                    </button>
+                </div>
+
+                <!-- Assembled Answer Slots -->
+                <div class="mb-2 text-xs font-mono uppercase text-zinc-400 text-center">Your Assembled Word (Click a tile to remove):</div>
+                <div id="builderAnswerSlots" class="min-h-[72px] p-3 rounded-2xl bg-zinc-100/70 dark:bg-zinc-950 border-2 border-dashed border-zinc-300 dark:border-zinc-800 flex flex-wrap items-center justify-center gap-2 mb-6">
+                    <!-- Selected tiles appear here -->
+                </div>
+
+                <!-- Scrambled Tile Bank -->
+                <div class="mb-2 text-xs font-mono uppercase text-zinc-400 text-center">Available Character Tiles:</div>
+                <div id="builderTileBank" class="flex flex-wrap items-center justify-center gap-2.5 min-h-[64px]">
+                    <!-- Scrambled tiles rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================= -->
+        <!-- PAGE 5: SMART ROMANIZER & MINI-STORY READER       -->
+        <!-- ================================================= -->
+        <section id="page-reader" class="page-view hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Left 8 Cols: Story Selector, Input & Ruby Canvas -->
+                <div class="lg:col-span-8 space-y-6">
+                    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <h2 class="text-lg font-bold text-zinc-900 dark:text-white">🔬 Smart Romanizer & Mini-Story Studio</h2>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400">Pick a real-world mini dialogue or paste any text/lyrics to X-Ray every syllable.</p>
+                            </div>
+                            <button onclick="speakFullReaderText()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-xs transition-all">
+                                🔊 Read Aloud
+                            </button>
+                        </div>
+
+                        <!-- Story Preset Buttons -->
+                        <div id="readerStoryPills" class="flex flex-wrap gap-2">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <textarea id="readerTextarea" rows="2" oninput="renderSmartReader()" placeholder="Type or paste Korean, Japanese, or Russian text here..."
+                            class="w-full rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 p-3.5 text-base sm:text-lg text-zinc-900 dark:text-white focus:outline-none focus:border-sky-500 resize-none"></textarea>
+                        <div class="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                            <span id="readerTranslationLine" class="italic">Translation appears here for pre-loaded stories</span>
+                            <div class="flex items-center gap-4">
+                                <label class="flex items-center gap-1.5 cursor-pointer">
+                                    <input type="checkbox" id="readerRulesToggle" checked onchange="renderSmartReader()" class="rounded text-sky-500">
+                                    <span>Real Sound Rules</span>
+                                </label>
+                                <label class="flex items-center gap-1.5 cursor-pointer">
+                                    <input type="checkbox" id="readerBlurKnownToggle" checked onchange="renderSmartReader()" class="rounded text-emerald-500">
+                                    <span>Blur Known Letters</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Token Cards Output -->
+                    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-zinc-100 dark:border-zinc-800">
+                            <span class="text-xs font-mono uppercase tracking-wider text-zinc-400">Click any syllable block to inspect & save to notes</span>
+                            <span id="readerMasteryStat" class="text-xs font-mono font-bold text-emerald-500">0% Known</span>
+                        </div>
+                        <div id="readerTokenCanvas" class="flex flex-wrap items-end gap-2.5 min-h-[120px] py-2">
+                            <!-- Token cards rendered here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right 4 Cols: Syllable X-Ray Inspector -->
+                <div class="lg:col-span-4 lg:sticky lg:top-32 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-xl" id="readerInspectorBox">
+                    <!-- Populated by clicking a token -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================= -->
+        <!-- PAGE 6: MY STUDY NOTES & FLASHCARD NOTEBOOK       -->
+        <!-- ================================================= -->
+        <section id="page-notes" class="page-view hidden space-y-6">
+            <!-- Header & Flashcard Review Trigger -->
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-zinc-900 dark:text-white">📝 My Study Notebook & Pinned Cards</h2>
+                    <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">All your personal study notes, mnemonics, and pinned words are saved automatically in your browser.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="toggleNotesFlashcardMode()" id="notesFlashcardBtn" class="px-4 py-2 rounded-xl bg-fuchsia-500 hover:bg-fuchsia-400 text-zinc-950 font-bold text-xs sm:text-sm transition-all">
+                        🗂️ Practice Notes as Flashcards
+                    </button>
+                </div>
+            </div>
+
+            <!-- Optional Flashcard Review Stage (Hidden by default) -->
+            <div id="notesFlashcardStage" class="hidden bg-gradient-to-br from-zinc-900 to-indigo-950 text-white border border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-xl mx-auto text-center space-y-5 shadow-2xl">
+                <div class="flex items-center justify-between text-xs font-mono text-zinc-400">
+                    <span id="fcCounter">Card 1 of 1</span>
+                    <button onclick="toggleNotesFlashcardMode()" class="text-zinc-400 hover:text-white">✕ Close Review</button>
+                </div>
+                <div onclick="flipNoteFlashcard()" class="cursor-pointer bg-zinc-950/80 border border-zinc-800 rounded-2xl p-8 min-h-[180px] flex flex-col items-center justify-center transition-all hover:border-sky-500/50">
+                    <div id="fcFrontText" class="text-3xl sm:text-4xl font-extrabold text-white">Front</div>
+                    <div id="fcBackText" class="hidden text-lg text-sky-300 mt-3 whitespace-pre-line">Back</div>
+                    <div class="text-[11px] font-mono text-zinc-500 mt-4">(Click card to flip / reveal note)</div>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                    <button onclick="stepNoteFlashcard(-1)" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold">← Previous</button>
+                    <button onclick="speakCurrentFlashcard()" class="px-4 py-2 rounded-xl bg-sky-500/20 text-sky-300 border border-sky-500/30 text-xs font-semibold">🔊 Listen</button>
+                    <button onclick="stepNoteFlashcard(1)" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold">Next →</button>
+                </div>
+            </div>
+
+            <!-- Add New Note Form + Notes Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Create Note Form (4 Cols) -->
+                <div class="lg:col-span-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 space-y-4">
+                    <h3 class="font-bold text-base text-zinc-900 dark:text-white">+ Create New Study Note</h3>
+                    <div>
+                        <label class="block text-xs font-mono uppercase text-zinc-400 mb-1">Script / Word / Title</label>
+                        <input id="newNoteTitle" type="text" placeholder="e.g., 떡볶이 (Tteokbokki) or ㄹ Rule" class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-zinc-400 mb-1">Category Tag</label>
+                            <select id="newNoteTag" class="w-full px-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-900 dark:text-white">
+                                <option value="Mnemonic">💡 Mnemonic Tip</option>
+                                <option value="Pinned Word">📌 Pinned Word</option>
+                                <option value="Grammar / Sound">⚡ Sound Rule</option>
+                                <option value="Personal">📝 Personal Note</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-zinc-400 mb-1">Language</label>
+                            <select id="newNoteLang" class="w-full px-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-900 dark:text-white">
+                                <option value="ko">🇰🇷 Korean</option>
+                                <option value="ja">🇯🇵 Japanese</option>
+                                <option value="ru">🇷🇺 Russian</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono uppercase text-zinc-400 mb-1">Your Explanation / Translation</label>
+                        <textarea id="newNoteContent" rows="4" placeholder="Write how to remember it, example sentences, or pronunciation notes..." class="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-sky-500 resize-none"></textarea>
+                    </div>
+                    <button onclick="addCustomNoteFromPage()" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-xs uppercase tracking-wider transition-all">
+                        Save Note (+15 XP)
+                    </button>
+                </div>
+
+                <!-- Saved Notes List (8 Cols) -->
+                <div class="lg:col-span-8 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex gap-2" id="notesLangFilterPills">
+                            <button onclick="setNotesFilter('all')" data-nf="all" class="nf-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-sky-500 text-zinc-950">All Languages</button>
+                            <button onclick="setNotesFilter('ko')" data-nf="ko" class="nf-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">🇰🇷 Korean</button>
+                            <button onclick="setNotesFilter('ja')" data-nf="ja" class="nf-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">🇯🇵 Japanese</button>
+                            <button onclick="setNotesFilter('ru')" data-nf="ru" class="nf-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">🇷🇺 Russian</button>
+                        </div>
+                    </div>
+
+                    <div id="savedNotesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================== -->
+    <!-- BITE-SIZED GUIDED LESSON MODAL                        -->
+    <!-- ===================================================== -->
+    <div id="lessonModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 animate-pop">
+            <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+                <span id="lessonModalStepBadge" class="text-xs font-mono uppercase px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-500 font-bold">STEP 1 LESSON</span>
+                <button onclick="closeLessonModal()" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-white text-sm font-bold">✕ Close</button>
+            </div>
+            <div id="lessonModalBody" class="space-y-4">
+                <!-- Populated dynamically -->
+            </div>
+            <div class="flex items-center justify-between pt-3 border-t border-zinc-100 dark:border-zinc-800">
+                <button onclick="closeLessonModal()" class="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-600 dark:text-zinc-300">Close</button>
+                <button id="lessonModalActionBtn" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-xs sm:text-sm transition-all">
+                    Complete Lesson (+25 XP) →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- FLOATING TOAST NOTIFICATION                           -->
+    <!-- ===================================================== -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ===================================================== -->
+    <!-- APPLICATION DATA & ENGINE SCRIPT                      -->
+    <!-- ===================================================== -->
+    <script>
+        /********************************************************************
+         * 1. COMPREHENSIVE MULTI-LANGUAGE ALPHABET & VOCABULARY DATABASE
+         ********************************************************************/
+        const APP_DB = {
+            ko: {
+                name: 'Korean',
+                scriptName: 'Hangul',
+                flag: '🇰🇷',
+                ttsLang: 'ko-KR',
+                heroTitle: 'Master Hangul & Real Korean Pronunciation',
+                heroDesc: 'King Sejong designed Hangul in 1443 so anyone could learn to read in a single afternoon. Follow the 4 steps below to master vowels, consonants, Batchim rules, and 48+ real-world Korean words.',
+                roadmap: [
+                    {
+                        step: 'Step 1',
+                        title: 'Basic Vowels (모음)',
+                        sub: 'Vertical & horizontal lines',
+                        desc: 'Korean vowels are built from 3 elements: a person standing (ㅣ), the earth (ㅡ), and the sun/dot (•).',
+                        examples: [
+                            { char: 'ㅏ', rom: 'a', tip: 'Person facing right → "ah" as in father' },
+                            { char: 'ㅓ', rom: 'eo', tip: 'Person facing left → "uh" as in son' },
+                            { char: 'ㅗ', rom: 'o', tip: 'Sun above earth → "oh"' },
+                            { char: 'ㅜ', rom: 'u', tip: 'Sun below earth → "oo" as in moon' }
+                        ],
+                        targetPage: 'alphabet',
+                        targetGroup: 'Basic Vowels'
+                    },
+                    {
+                        step: 'Step 2',
+                        title: 'Core Consonants (자음)',
+                        sub: 'Shapes mimic your mouth!',
+                        desc: 'Hangul consonants literally draw the shape your tongue and lips make when pronouncing them.',
+                        examples: [
+                            { char: 'ㄱ', rom: 'g/k', tip: 'Back of tongue touching roof of mouth (Gun shape)' },
+                            { char: 'ㄴ', rom: 'n', tip: 'Tongue tip touching upper teeth (Nose shape)' },
+                            { char: 'ㅁ', rom: 'm', tip: 'Closed lips box → Mouth (ㅁ = m)' },
+                            { char: 'ㅅ', rom: 's', tip: 'Air hissing between teeth → Seashell' }
+                        ],
+                        targetPage: 'alphabet',
+                        targetGroup: 'Basic Consonants'
+                    },
+                    {
+                        step: 'Step 3',
+                        title: 'Tense & Batchim Rules',
+                        sub: 'How natives actually sound',
+                        desc: 'When a consonant sits at the bottom of a block (Batchim), it blends with the next block!',
+                        examples: [
+                            { char: '독립', rom: 'dong-nip', tip: 'Spelled dok-rip, but ㄱ+ㄹ nasalizes to ng+n!' },
+                            { char: '음악', rom: 'eu-mak', tip: 'Final ㅁ glides into silent ㅇ of 악!' },
+                            { char: '감사합니다', rom: 'gam-sa-ham-ni-da', tip: 'ㅂ before ㄴ softens into m!' }
+                        ],
+                        targetPage: 'reader',
+                        targetGroup: null
+                    },
+                    {
+                        step: 'Step 4',
+                        title: '48+ Real Korean Words',
+                        sub: 'Cafe, K-Pop, Travel & Vibes',
+                        desc: 'Stop only knowing "Hello". Learn how to order iced americanos, use K-drama slang, and play speed drills.',
+                        examples: [
+                            { char: '대박', rom: 'daebak', tip: 'Awesome / Jackpot!' },
+                            { char: '아아', rom: 'a-a', tip: 'Slang for Iced Americano (아이스 아메리카노)' },
+                            { char: '설레다', rom: 'seolleda', tip: 'Heart-fluttering excitement' }
+                        ],
+                        targetPage: 'words',
+                        targetGroup: null
+                    }
+                ],
+                alphabetGroups: ['Basic Vowels', 'Basic Consonants', 'Double & Compound'],
+                alphabet: [
+                    // Basic Vowels
+                    { char: 'ㅏ', rom: 'a', group: 'Basic Vowels', sound: 'Like "a" in father', mnemonic: 'An arrow pointing right → "Ah!"', example: '아이 (a-i) = Child' },
+                    { char: 'ㅑ', rom: 'ya', group: 'Basic Vowels', sound: 'Like "ya" in yard', mnemonic: 'Two dashes on ㅏ adds a "Y" glide!', example: '야구 (ya-gu) = Baseball' },
+                    { char: 'ㅓ', rom: 'eo', group: 'Basic Vowels', sound: 'Like "u" inuh / son', mnemonic: 'Arrow pointing left ← "Uh?"', example: '어머니 (eo-meo-ni) = Mother' },
+                    { char: 'ㅕ', rom: 'yeo', group: 'Basic Vowels', sound: 'Like "yuh" in young', mnemonic: 'Two dashes pointing left → "Yuh"', example: '여름 (yeo-reum) = Summer' },
+                    { char: 'ㅗ', rom: 'o', group: 'Basic Vowels', sound: 'Like "o" in go', mnemonic: 'Pointing OVER the line → "Oh"', example: '오늘 (o-neul) = Today' },
+                    { char: 'ㅛ', rom: 'yo', group: 'Basic Vowels', sound: 'Like "yo" in yo-yo', mnemonic: 'Two ticks pointing up → "Yo!"', example: '요리 (yo-ri) = Cooking' },
+                    { char: 'ㅜ', rom: 'u', group: 'Basic Vowels', sound: 'Like "oo" in moon', mnemonic: 'Pointing UNDER the line → "Oo"', example: '우유 (u-yu) = Milk' },
+                    { char: 'ㅠ', rom: 'yu', group: 'Basic Vowels', sound: 'Like "you"', mnemonic: 'Crying eyes ㅠㅠ → "Boo-hoo, You!"', example: '유리 (yu-ri) = Glass' },
+                    { char: 'ㅡ', rom: 'eu', group: 'Basic Vowels', sound: 'Pull corners of lips back ("ugh")', mnemonic: 'A flat horizontal brook → "Eugh"', example: '으뜸 (eu-tteum) = Best' },
+                    { char: 'ㅣ', rom: 'i', group: 'Basic Vowels', sound: 'Like "ee" in tree', mnemonic: 'A straight vertical tree → "ee"', example: '이름 (i-reum) = Name' },
+                    // Basic Consonants
+                    { char: 'ㄱ', rom: 'g / k', group: 'Basic Consonants', sound: 'Soft g at start, k at end', mnemonic: 'Looks like a Gun → G', example: '가방 (ga-bang) = Bag' },
+                    { char: 'ㄴ', rom: 'n', group: 'Basic Consonants', sound: 'Like "n" in nose', mnemonic: 'Looks like a Nose in profile → N', example: '나비 (na-bi) = Butterfly' },
+                    { char: 'ㄷ', rom: 'd / t', group: 'Basic Consonants', sound: 'Soft d at start, t at end', mnemonic: 'Looks like a Doorframe → D', example: '다리 (da-ri) = Bridge / Leg' },
+                    { char: 'ㄹ', rom: 'r / l', group: 'Basic Consonants', sound: 'Flap R between vowels, L at end', mnemonic: 'Looks like a Rattlesnake → R/L', example: '라면 (ra-myeon) = Ramen' },
+                    { char: 'ㅁ', rom: 'm', group: 'Basic Consonants', sound: 'Like "m" in mom', mnemonic: 'Square Mouth shape → M', example: '마음 (ma-eum) = Heart/Mind' },
+                    { char: 'ㅂ', rom: 'b / p', group: 'Basic Consonants', sound: 'Soft b at start, p at end', mnemonic: 'Looks like a Bucket half-full → B', example: '바다 (ba-da) = Sea' },
+                    { char: 'ㅅ', rom: 's', group: 'Basic Consonants', sound: 'Like "s" in sea ("sh" before i)', mnemonic: 'Ski slope or Seashell → S', example: '사랑 (sa-rang) = Love' },
+                    { char: 'ㅇ', rom: 'silent / ng', group: 'Basic Consonants', sound: 'Silent at start, "-ng" at bottom', mnemonic: 'Zero/Empty circle at top, ring "-ng" at bottom', example: '안녕 (an-nyeong) = Hi' },
+                    { char: 'ㅈ', rom: 'j', group: 'Basic Consonants', sound: 'Like "j" in joy', mnemonic: 'Person wearing a Jelly hat → J', example: '자유 (ja-yu) = Freedom' },
+                    { char: 'ㅊ', rom: 'ch', group: 'Basic Consonants', sound: 'Aspirated "ch" in church', mnemonic: 'ㅈ with an extra top antenna → Ch!', example: '친구 (chin-gu) = Friend' },
+                    { char: 'ㅋ', rom: 'k', group: 'Basic Consonants', sound: 'Strong breathy "k" in key', mnemonic: 'Looks like a Key → K (ㅋㅋㅋ = lol)', example: '커피 (keo-pi) = Coffee' },
+                    { char: 'ㅌ', rom: 't', group: 'Basic Consonants', sound: 'Strong breathy "t" in top', mnemonic: 'Looks like an E with three Teeth → T', example: '태양 (tae-yang) = Sun' },
+                    { char: 'ㅍ', rom: 'p', group: 'Basic Consonants', sound: 'Strong breathy "p" in part', mnemonic: 'Looks like Roman numeral Pillars → P', example: '파도 (pa-do) = Wave' },
+                    { char: 'ㅎ', rom: 'h', group: 'Basic Consonants', sound: 'Like "h" in hat', mnemonic: 'Person wearing a Hat → H (ㅎㅎ = haha)', example: '하늘 (ha-neul) = Sky' },
+                    // Double & Compound
+                    { char: 'ㄲ', rom: 'kk', group: 'Double & Compound', sound: 'Tense, unaspirated "k"', mnemonic: 'Double Gun → sharp tense KK', example: '꿈 (kkum) = Dream' },
+                    { char: 'ㄸ', rom: 'tt', group: 'Double & Compound', sound: 'Tense, unaspirated "t"', mnemonic: 'Double Door → tense TT', example: '떡 (tteok) = Rice cake' },
+                    { char: 'ㅃ', rom: 'pp', group: 'Double & Compound', sound: 'Tense, unaspirated "p"', mnemonic: 'Double Bucket → tense PP', example: '빵 (ppang) = Bread' },
+                    { char: 'ㅆ', rom: 'ss', group: 'Double & Compound', sound: 'Sharp hiss "ss"', mnemonic: 'Double Ski slope → sharp SS', example: '쓰다 (sseu-da) = To write' },
+                    { char: 'ㅉ', rom: 'jj', group: 'Double & Compound', sound: 'Tense "jj"', mnemonic: 'Double Jelly hat → tense JJ', example: '짜장면 (jja-jang-myeon)' },
+                    { char: 'ㅐ', rom: 'ae', group: 'Double & Compound', sound: 'Like "e" in bed / "a" in cat', mnemonic: 'ㅏ + ㅣ combined → "ae"', example: '개 (gae) = Dog' },
+                    { char: 'ㅔ', rom: 'e', group: 'Double & Compound', sound: 'Like "e" in met', mnemonic: 'ㅓ + ㅣ combined → "e"', example: '세계 (se-gye) = World' },
+                    { char: 'ㅘ', rom: 'wa', group: 'Double & Compound', sound: 'o + a = "wa"', mnemonic: 'ㅗ (o) + ㅏ (a) glides into "Wa!"', example: '과일 (gwa-il) = Fruit' },
+                    { char: 'ㅝ', rom: 'wo', group: 'Double & Compound', sound: 'u + eo = "wo"', mnemonic: 'ㅜ (u) + ㅓ (eo) glides into "Wo"', example: '원 (won) = Korean Won' },
+                    { char: 'ㅢ', rom: 'ui', group: 'Double & Compound', sound: 'eu + i glide', mnemonic: 'ㅡ + ㅣ fast glide', example: '의사 (ui-sa) = Doctor' }
+                ],
+                words: [
+                    // Essentials (8)
+                    { script: '안녕하세요', rom: 'an-nyeong-ha-se-yo', en: 'Hello (Polite)', cat: 'Essentials', tip: 'Standard polite greeting used all day' },
+                    { script: '감사합니다', rom: 'gam-sa-ham-ni-da', en: 'Thank you (Formal)', cat: 'Essentials', tip: 'ㅂ before ㄴ sounds like "m" (ham-ni-da)' },
+                    { script: '죄송합니다', rom: 'joe-song-ham-ni-da', en: 'I am sorry', cat: 'Essentials', tip: 'Polite apology in public' },
+                    { script: '괜찮아요', rom: 'gwaen-cha-na-yo', en: 'It is okay / No problem', cat: 'Essentials', tip: 'ㅎ is silent between ㄴ and ㅏ!' },
+                    { script: '잠시만요', rom: 'jam-si-man-yo', en: 'Excuse me / Just a moment', cat: 'Essentials', tip: 'Used when passing through a crowd' },
+                    { script: '네 / 아니요', rom: 'ne / a-ni-yo', en: 'Yes / No', cat: 'Essentials', tip: 'Core conversational replies' },
+                    { script: '반갑습니다', rom: 'ban-gap-seum-ni-da', en: 'Nice to meet you', cat: 'Essentials', tip: 'ㅂ before ㄴ nasalizes to m' },
+                    { script: '잘 자요', rom: 'jal ja-yo', en: 'Good night', cat: 'Essentials', tip: 'Literally "Sleep well"' },
+                    // Food & Cafe (8)
+                    { script: '떡볶이', rom: 'tteok-bo-kki', en: 'Spicy Rice Cakes', cat: 'Food & Cafe', tip: 'Iconic Korean street food; ㄲ carries over' },
+                    { script: '삼겹살', rom: 'sam-gyeop-sal', en: 'Grilled Pork Belly', cat: 'Food & Cafe', tip: 'Literally "Three-layer flesh" K-BBQ' },
+                    { script: '김치찌개', rom: 'gim-chi-jji-gae', en: 'Kimchi Stew', cat: 'Food & Cafe', tip: '찌 uses tense ㅉ (jji)' },
+                    { script: '비빔밥', rom: 'bi-bim-bap', en: 'Mixed Rice Bowl', cat: 'Food & Cafe', tip: '비비다 (mix) + 밥 (rice)' },
+                    { script: '아이스 아메리카노', rom: 'a-i-seu a-me-ri-ka-no', en: 'Iced Americano', cat: 'Food & Cafe', tip: 'Often shortened to 아아 (A-A) in Seoul cafes!' },
+                    { script: '맛있어요', rom: 'ma-si-sseo-yo', en: 'It is delicious!', cat: 'Food & Cafe', tip: 'ㅅ carries over to silent ㅇ → ma-si-sseo-yo' },
+                    { script: '물 주세요', rom: 'mul ju-se-yo', en: 'Water, please', cat: 'Food & Cafe', tip: 'X + 주세요 (ju-se-yo) = "Please give me X"' },
+                    { script: '치맥', rom: 'chi-maek', en: 'Fried Chicken & Beer', cat: 'Food & Cafe', tip: 'Combo of 치킨 (Chicken) + 맥주 (Maekju/Beer)' },
+                    // Pop Culture & Slang (8)
+                    { script: '대박', rom: 'dae-bak', en: 'Awesome / Jackpot!', cat: 'Pop Culture & Slang', tip: 'Used whenever something amazing happens' },
+                    { script: '화이팅', rom: 'hwa-i-ting', en: 'You can do it! / Cheer up!', cat: 'Pop Culture & Slang', tip: 'Korean encouragement cheer' },
+                    { script: '꿀잼', rom: 'kkul-jaem', en: 'Super fun / Hilarious', cat: 'Pop Culture & Slang', tip: '꿀 (Honey) + 재미 (Fun)' },
+                    { script: '진심', rom: 'jin-sim', en: 'For real / Sincerely', cat: 'Pop Culture & Slang', tip: 'Used like "Seriously / Fr"' },
+                    { script: '막내', rom: 'mang-nae', en: 'Youngest member of a group', cat: 'Pop Culture & Slang', tip: 'ㄱ before ㄴ nasalizes to "ng" (mang-nae)!' },
+                    { script: '오빠 / 언니', rom: 'o-ppa / eon-ni', en: 'Older brother / Older sister', cat: 'Pop Culture & Slang', tip: 'Used by female speakers for older friends' },
+                    { script: '최애', rom: 'choe-ae', en: 'Ultimate Bias / Favorite', cat: 'Pop Culture & Slang', tip: 'K-pop term for your #1 favorite member' },
+                    { script: '심쿵', rom: 'sim-kung', en: 'Heart-thumping (from cuteness)', cat: 'Pop Culture & Slang', tip: 'Sound of your heart skipping a beat' },
+                    // Travel & Places (8)
+                    { script: '지하철역', rom: 'ji-ha-cheol-yeok', en: 'Subway Station', cat: 'Travel & Places', tip: '역 (yeok) means station' },
+                    { script: '공항', rom: 'gong-hang', en: 'Airport', cat: 'Travel & Places', tip: '인천공항 = Incheon Airport' },
+                    { script: '화장실 어디예요', rom: 'hwa-jang-sil eo-di-ye-yo', en: 'Where is the restroom?', cat: 'Travel & Places', tip: '어디예요 = "Where is it?"' },
+                    { script: '얼마예요', rom: 'eol-ma-ye-yo', en: 'How much is it?', cat: 'Travel & Places', tip: 'Essential shopping phrase in Myeongdong' },
+                    { script: '영수증', rom: 'yeong-su-jeung', en: 'Receipt', cat: 'Travel & Places', tip: 'Cashiers ask: 영수증 드릴까요?' },
+                    { script: '편의점', rom: 'pyeo-ni-jeom', en: 'Convenience Store', cat: 'Travel & Places', tip: 'GS25, CU, 7-Eleven all over Korea' },
+                    { script: '노래방', rom: 'no-rae-bang', en: 'Karaoke Room', cat: 'Travel & Places', tip: '노래 (Song) + 방 (Room)' },
+                    { script: '출구', rom: 'chul-gu', en: 'Exit', cat: 'Travel & Places', tip: 'Look for 출구 signs in subway stations' },
+                    // Feelings & Vibes (8)
+                    { script: '행복해요', rom: 'haeng-bo-kae-yo', en: 'I am happy', cat: 'Feelings & Vibes', tip: 'ㄱ + ㅎ blends into aspirated "k" (bo-kae-yo)' },
+                    { script: '설레다', rom: 'seol-le-da', en: 'Fluttering / Excited heart', cat: 'Feelings & Vibes', tip: 'ㄴ/ㄹ liquid rule creates double "l"' },
+                    { script: '피곤해요', rom: 'pi-gon-hae-yo', en: 'I am tired', cat: 'Feelings & Vibes', tip: 'Very common after a long study day' },
+                    { script: '배고파요', rom: 'bae-go-pa-yo', en: 'I am hungry', cat: 'Feelings & Vibes', tip: '배 (stomach) + 고프다 (empty)' },
+                    { script: '보고 싶어요', rom: 'bo-go si-peo-yo', en: 'I miss you', cat: 'Feelings & Vibes', tip: 'Literally "I want to see you"' },
+                    { script: '사랑해요', rom: 'sa-rang-hae-yo', en: 'I love you', cat: 'Feelings & Vibes', tip: 'Polite form of 사랑해' },
+                    { script: '신나요', rom: 'sin-na-yo', en: 'I am thrilled / hyped!', cat: 'Feelings & Vibes', tip: 'Great for concerts or trips' },
+                    { script: '부러워요', rom: 'bu-reo-wo-yo', en: 'I am jealous / envious', cat: 'Feelings & Vibes', tip: 'Used playfully when a friend eats good food' },
+                    // Numbers & Actions (8)
+                    { script: '하나 둘 셋', rom: 'ha-na dul set', en: 'One, Two, Three (Native)', cat: 'Numbers & Actions', tip: 'Used when counting items or taking photos!' },
+                    { script: '일 이 삼', rom: 'il i sam', en: '1, 2, 3 (Sino-Korean)', cat: 'Numbers & Actions', tip: 'Used for money, dates, and phone numbers' },
+                    { script: '가다 / 오다', rom: 'ga-da / o-da', en: 'To go / To come', cat: 'Numbers & Actions', tip: 'Core movement verbs' },
+                    { script: '먹다 / 마시다', rom: 'meok-da / ma-si-da', en: 'To eat / To drink', cat: 'Numbers & Actions', tip: 'Essential dining verbs' },
+                    { script: '공부하다', rom: 'gong-bu-ha-da', en: 'To study', cat: 'Numbers & Actions', tip: '한국어를 공부해요 = I study Korean' },
+                    { script: '듣다 / 보다', rom: 'deut-da / bo-da', en: 'To listen / To watch', cat: 'Numbers & Actions', tip: '음악을 듣다 = Listen to music' },
+                    { script: '오늘 / 내일', rom: 'o-neul / nae-il', en: 'Today / Tomorrow', cat: 'Numbers & Actions', tip: 'Everyday time words' },
+                    { script: '지금', rom: 'ji-geum', en: 'Right now', cat: 'Numbers & Actions', tip: '지금 뭐 해요? = What are you doing now?' }
+                ],
+                stories: [
+                    {
+                        label: '☕ Seoul Cafe Order',
+                        text: '안녕하세요 아이스 아메리카노 하나 주세요 감사합니다',
+                        translation: '"Hello! One Iced Americano please. Thank you!" (Notice 감사합니다 pronounced gam-sa-ham-ni-da)'
+                    },
+                    {
+                        label: '🎵 K-Pop & Music Vibe',
+                        text: '한국 음악을 진짜 사랑해요 노래가 대박이에요',
+                        translation: '"I really love Korean music! The song is awesome."'
+                    },
+                    {
+                        label: '⚡ Batchim Sound Trap',
+                        text: '독립기념관에 친구하고 같이 갑니다',
+                        translation: '"Going to the Independence Hall together with a friend." (독립 → dong-nip, 갑니다 → gam-ni-da)'
+                    }
+                ]
+            },
+
+            ja: {
+                name: 'Japanese',
+                scriptName: 'Hiragana & Katakana',
+                flag: '🇯🇵',
+                ttsLang: 'ja-JP',
+                heroTitle: 'Master Hiragana, Katakana & Real Romaji',
+                heroDesc: 'Japanese uses curvy Hiragana for native words & grammar, and angular Katakana for loanwords (like コーヒー Coffee). Learn both syllabaries with visual mnemonics and 48+ real expressions.',
+                roadmap: [
+                    {
+                        step: 'Step 1',
+                        title: 'Hiragana Vowels (あ〜お)',
+                        sub: 'The 5 pure vowel sounds',
+                        desc: 'Every single Japanese syllable ends in one of these 5 crisp vowels: A, I, U, E, O.',
+                        examples: [
+                            { char: 'あ', rom: 'a', tip: 'Looks like an Apple on a stem → "ah"' },
+                            { char: 'い', rom: 'i', tip: 'Two vertical Eels swimming → "ee"' },
+                            { char: 'う', rom: 'u', tip: 'A tilted U shape → "oo"' },
+                            { char: 'お', rom: 'o', tip: 'Golf ball on a tee ("Oh!")' }
+                        ],
+                        targetPage: 'alphabet',
+                        targetGroup: 'Hiragana Core'
+                    },
+                    {
+                        step: 'Step 2',
+                        title: 'K, S, T, N Rows (か〜の)',
+                        sub: 'Consonant + Vowel pairs',
+                        desc: 'Combine a consonant with the 5 vowels! Watch out for shi (し), chi (ち), and tsu (つ).',
+                        examples: [
+                            { char: 'か', rom: 'ka', tip: 'Blade cutting a stick → "Ka!"' },
+                            { char: 'し', rom: 'shi', tip: 'Curved drinking straw → "She"' },
+                            { char: 'つ', rom: 'tsu', tip: 'Big Tsunami wave → "Tsu"' },
+                            { char: 'ねこ', rom: 'neko', tip: 'Cat (ね ne + こ ko)' }
+                        ],
+                        targetPage: 'alphabet',
+                        targetGroup: 'Hiragana Core'
+                    },
+                    {
+                        step: 'Step 3',
+                        title: 'Katakana & Dakuten (゛)',
+                        sub: 'Loanwords & voiced sounds',
+                        desc: 'Adding two little quotes (Dakuten ゛) voices a consonant: K→G, S→Z, T→D, H→B!',
+                        examples: [
+                            { char: '가/が', rom: 'ga', tip: 'か (ka) + ゛ becomes が (ga)!' },
+                            { char: 'コーヒー', rom: 'kōhī', tip: 'Coffee in angular Katakana' },
+                            { char: 'きっぷ', rom: 'kippu', tip: 'Small っ doubles the next consonant!' }
+                        ],
+                        targetPage: 'alphabet',
+                        targetGroup: 'Katakana & Modifiers'
+                    },
+                    {
+                        step: 'Step 4',
+                        title: '48+ Everyday Words',
+                        sub: 'Ramen, Anime Slang & Travel',
+                        desc: 'Practice reading real Japanese words for sushi bars, train stations, and anime expressions.',
+                        examples: [
+                            { char: 'すごい', rom: 'sugoi', tip: 'Amazing / Incredible!' },
+                            { char: 'いただきます', rom: 'itadakimasu', tip: 'Said before eating a meal' },
+                            { char: 'かわいい', rom: 'kawaii', tip: 'Cute / Adorable' }
+                        ],
+                        targetPage: 'words',
+                        targetGroup: null
+                    }
+                ],
+                alphabetGroups: ['Hiragana Core', 'Hiragana M-W-N', 'Katakana & Modifiers'],
+                alphabet: [
+                    // Hiragana Core
+                    { char: 'あ', rom: 'a', group: 'Hiragana Core', sound: 'Like "a" in father', mnemonic: 'Looks like an Apple with a stem on top → A', example: 'あ메 / あめ (ame) = Rain' },
+                    { char: 'い', rom: 'i', group: 'Hiragana Core', sound: 'Like "ee" in meet', mnemonic: 'Two Eels standing side-by-side → ii', example: 'いぬ (inu) = Dog' },
+                    { char: 'う', rom: 'u', group: 'Hiragana Core', sound: 'Like "oo" in food', mnemonic: 'Looks like a sideways U with a roof → U', example: 'うみ (umi) = Sea' },
+                    { char: 'え', rom: 'e', group: 'Hiragana Core', sound: 'Like "e" in pet', mnemonic: 'An Exotic bird running → E', example: 'えき (eki) = Station' },
+                    { char: 'お', rom: 'o', group: 'Hiragana Core', sound: 'Like "o" in go', mnemonic: 'A golf ball on a green ("Oh, nice shot!")', example: 'おちゃ (ocha) = Green tea' },
+                    { char: 'か', rom: 'ka', group: 'Hiragana Core', sound: 'Crisp "ka"', mnemonic: 'Looks like a Kite dancer → Ka', example: 'かさ (kasa) = Umbrella' },
+                    { char: 'き', rom: 'ki', group: 'Hiragana Core', sound: 'Like "key"', mnemonic: 'Looks just like an old skeleton Key → Ki', example: 'きもの (kimono)' },
+                    { char: 'く', rom: 'ku', group: 'Hiragana Core', sound: 'Like "coo" in cuckoo', mnemonic: 'Open beak of a Cuckoo bird < → Ku', example: 'くつ (kutsu) = Shoes' },
+                    { char: 'け', rom: 'ke', group: 'Hiragana Core', sound: 'Like "ke" in keg', mnemonic: 'Curved sides of a wooden Keg → Ke', example: 'けさ (kesa) = This morning' },
+                    { char: 'こ', rom: 'ko', group: 'Hiragana Core', sound: 'Like "co" in coin', mnemonic: 'Two Koi fish swimming parallel → Ko', example: 'こころ (kokoro) = Heart' },
+                    { char: 'さ', rom: 'sa', group: 'Hiragana Core', sound: 'Like "sa" in salsa', mnemonic: 'Looks like a happy face pouring Salsa → Sa', example: 'さくら (sakura) = Cherry blossom' },
+                    { char: 'し', rom: 'shi', group: 'Hiragana Core', sound: 'Like "she"', mnemonic: 'A curved drinking straw ("She drinks") → Shi', example: 'しろ (shiro) = White / Castle' },
+                    { char: 'す', rom: 'su', group: 'Hiragana Core', sound: 'Like "soo" in soon', mnemonic: 'A curly noodle slurped up ("Suuu!") → Su', example: 'すし (sushi) = Sushi' },
+                    { char: 'せ', rom: 'se', group: 'Hiragana Core', sound: 'Like "se" in set', mnemonic: 'Two mouths Saying something → Se', example: 'せかい (sekai) = World' },
+                    { char: 'そ', rom: 'so', group: 'Hiragana Core', sound: 'Like "so"', mnemonic: 'Zigzag stitch of a Sewing machine → So', example: 'そら (sora) = Sky' },
+                    { char: 'た', rom: 'ta', group: 'Hiragana Core', sound: 'Like "ta" in taco', mnemonic: 'Looks like the letters "t" + "a"!', example: 'たまご (tamago) = Egg' },
+                    { char: 'ち', rom: 'chi', group: 'Hiragana Core', sound: 'Like "chee" in cheer', mnemonic: 'Looks like a number 5 Cheerleader → Chi', example: 'ちず (chizu) = Map' },
+                    { char: 'つ', rom: 'tsu', group: 'Hiragana Core', sound: 'Like "ts" in cats + oo', mnemonic: 'A giant curling Tsunami wave → Tsu', example: 'つき (tsuki) = Moon' },
+                    { char: 'て', rom: 'te', group: 'Hiragana Core', sound: 'Like "te" in ten', mnemonic: 'Broken wing of a Tennis racket → Te', example: 'てがみ (tegami) = Letter' },
+                    { char: 'と', rom: 'to', group: 'Hiragana Core', sound: 'Like "to" in tornado', mnemonic: 'A thorn stuck in a Toe → To', example: 'ともだち (tomodachi) = Friend' },
+                    { char: 'な', rom: 'na', group: 'Hiragana Core', sound: 'Like "na" in nacho', mnemonic: 'A knot tied at the bottom → Na', example: 'なつ (natsu) = Summer' },
+                    { char: 'に', rom: 'ni', group: 'Hiragana Core', sound: 'Like "knee"', mnemonic: 'Looks like a kneecap on a leg → Ni', example: 'にほん (nihon) = Japan' },
+                    { char: 'の', rom: 'no', group: 'Hiragana Core', sound: 'Like "no"', mnemonic: 'Looks like a round "No Smoking" 🚫 sign → No', example: 'のみもの (nomimono) = Drink' },
+                    // Hiragana M-W-N
+                    { char: 'は', rom: 'ha (wa)', group: 'Hiragana M-W-N', sound: '"ha", or "wa" as topic particle', mnemonic: 'Capital H + a → Ha!', example: 'はな (hana) = Flower' },
+                    { char: 'ひ', rom: 'hi', group: 'Hiragana M-W-N', sound: 'Like "he" in hehehe', mnemonic: 'A big smiling mouth laughing "Hehehe!" → Hi', example: 'ひと (hito) = Person' },
+                    { char: 'ふ', rom: 'fu', group: 'Hiragana M-W-N', sound: 'Soft blow between lips (fu/hu)', mnemonic: 'Curved slopes of Mount Fuji → Fu', example: 'ふゆ (fuyu) = Winter' },
+                    { char: 'ま', rom: 'ma', group: 'Hiragana M-W-N', sound: 'Like "ma" in mama', mnemonic: 'Two arms of Mama hugging → Ma', example: 'まち (machi) = Town' },
+                    { char: 'み', rom: 'mi', group: 'Hiragana M-W-N', sound: 'Like "me" in music', mnemonic: 'Looks like a musical note treble clef → Mi', example: 'みず (mizu) = Water' },
+                    { char: 'め', rom: 'me', group: 'Hiragana M-W-N', sound: 'Like "me" in met', mnemonic: 'Looks like a round Eye (め means Eye!) → Me', example: 'めがね (megane) = Glasses' },
+                    { char: 'も', rom: 'mo', group: 'Hiragana M-W-N', sound: 'Like "mo" in more', mnemonic: 'A fishhook with two worms ("More bait!") → Mo', example: 'もも (momo) = Peach' },
+                    { char: 'や', rom: 'ya', group: 'Hiragana M-W-N', sound: 'Like "ya" in yak', mnemonic: 'Horns of a Yak → Ya', example: 'やま (yama) = Mountain' },
+                    { char: 'ゆ', rom: 'yu', group: 'Hiragana M-W-N', sound: 'Like "you"', mnemonic: 'Looks like a tropical fish swimming → Yu', example: 'ゆき (yuki) = Snow' },
+                    { char: 'よ', rom: 'yo', group: 'Hiragana M-W-N', sound: 'Like "yo" in yo-yo', mnemonic: 'A Yo-yo dangling on a string → Yo', example: 'よる (yoru) = Night' },
+                    { char: 'ら', rom: 'ra', group: 'Hiragana M-W-N', sound: 'Light tap between R and L', mnemonic: 'A Rabbit sitting upright → Ra', example: 'らいねん (rainen) = Next year' },
+                    { char: 'る', rom: 'ru', group: 'Hiragana M-W-N', sound: 'Tapped R + oo', mnemonic: 'Has a little Ruby loop at the bottom → Ru', example: 'るす (rusu) = Away from home' },
+                    { char: 'わ', rom: 'wa', group: 'Hiragana M-W-N', sound: 'Like "wa" in water', mnemonic: 'A Swan with a round belly → Wa', example: 'わたし (watashi) = I / Me' },
+                    { char: 'ん', rom: 'n', group: 'Hiragana M-W-N', sound: 'Nasal "n"', mnemonic: 'Looks exactly like a cursive lowercase "n"!', example: 'ほん (hon) = Book' },
+                    // Katakana & Modifiers
+                    { char: 'ア', rom: 'a (Kata)', group: 'Katakana & Modifiers', sound: 'Loanword "a"', mnemonic: 'Angular Axe head → A', example: 'アニメ (anime) = Anime' },
+                    { char: 'イ', rom: 'i (Kata)', group: 'Katakana & Modifiers', sound: 'Loanword "i"', mnemonic: 'Looks like an artist Easel → I', example: 'イチゴ (ichigo) = Strawberry' },
+                    { char: 'カ', rom: 'ka (Kata)', group: 'Katakana & Modifiers', sound: 'Loanword "ka"', mnemonic: 'Angular version of か without the top dash', example: 'カメラ (kamera) = Camera' },
+                    { char: 'コ', rom: 'ko (Kata)', group: 'Katakana & Modifiers', sound: 'Loanword "ko"', mnemonic: 'Two sharp 90-degree Corners → Ko', example: 'コーヒー (kōhī) = Coffee' },
+                    { char: 'ラ', rom: 'ra (Kata)', group: 'Katakana & Modifiers', sound: 'Loanword "ra"', mnemonic: 'Rocking chair top → Ra', example: 'ラーメン (rāmen) = Ramen' },
+                    { char: 'ン', rom: 'n (Kata)', group: 'Katakana & Modifiers', sound: 'Loanword "n"', mnemonic: 'One-eyed winking face → N', example: 'パン (pan) = Bread' },
+                    { char: 'が', rom: 'ga', group: 'Katakana & Modifiers', sound: 'Voiced K → G', mnemonic: 'か (ka) + Dakuten quotes (゛) = ga', example: 'がっこう (gakkō) = School' },
+                    { char: 'だ', rom: 'da', group: 'Katakana & Modifiers', sound: 'Voiced T → D', mnemonic: 'た (ta) + Dakuten (゛) = da', example: 'だいがく (daigaku) = University' },
+                    { char: 'ぱ', rom: 'pa', group: 'Katakana & Modifiers', sound: 'Plosive H → P', mnemonic: 'は (ha) + Handakuten circle (゜) = Pop! Pa', example: 'かんぱい (kanpai) = Cheers!' }
+                ],
+                words: [
+                    // Essentials (8)
+                    { script: 'こんにちは', rom: 'kon-ni-chi-wa', en: 'Hello / Good afternoon', cat: 'Essentials', tip: 'Final は is the topic particle, pronounced "wa"' },
+                    { script: 'ありがとうございます', rom: 'a-ri-ga-to-u go-za-i-ma-su', en: 'Thank you very much', cat: 'Essentials', tip: 'Polite everyday gratitude' },
+                    { script: 'すみません', rom: 'su-mi-ma-sen', en: 'Excuse me / I am sorry', cat: 'Essentials', tip: 'Used to call a waiter or apologize politely' },
+                    { script: 'おねがいします', rom: 'o-ne-ga-i-shi-ma-su', en: 'Please (when requesting)', cat: 'Essentials', tip: 'Attach after any item you order!' },
+                    { script: 'だいじょうぶ', rom: 'da-i-jo-u-bu', en: 'It is okay / I am fine', cat: 'Essentials', tip: 'Super useful for declining bags or saying you are alright' },
+                    { script: 'はい / いいえ', rom: 'ha-i / i-i-e', en: 'Yes / No', cat: 'Essentials', tip: 'Basic conversational responses' },
+                    { script: 'おはようございます', rom: 'o-ha-yo-u go-za-i-ma-su', en: 'Good morning (Polite)', cat: 'Essentials', tip: 'Drop gozaimasu with close friends' },
+                    { script: 'おやすみなさい', rom: 'o-ya-su-mi-na-sa-i', en: 'Good night', cat: 'Essentials', tip: 'Warm bedtime phrase' },
+                    // Food & Cafe (8)
+                    { script: 'いただきます', rom: 'i-ta-da-ki-ma-su', en: 'Thank you for the meal (before eating)', cat: 'Food & Cafe', tip: 'Humble expression before picking up chopsticks' },
+                    { script: 'ごちそうさまでした', rom: 'go-chi-so-u-sa-ma de-shi-ta', en: 'Thank you for the feast (after eating)', cat: 'Food & Cafe', tip: 'Say this to the chef when leaving a restaurant!' },
+                    { script: 'おいしい', rom: 'o-i-shi-i', en: 'Delicious!', cat: 'Food & Cafe', tip: 'Instant way to make any chef smile' },
+                    { script: 'ラーメン', rom: 'ra-a-men', en: 'Ramen Noodles', cat: 'Food & Cafe', tip: 'Written in Katakana with long vowel dash ー' },
+                    { script: 'おみずを ください', rom: 'o-mi-zu o ku-da-sa-i', en: 'Water, please', cat: 'Food & Cafe', tip: 'X を ください = "Please give me X"' },
+                    { script: 'コーヒー', rom: 'ko-o-hi-i', en: 'Coffee', cat: 'Food & Cafe', tip: 'Classic Katakana loanword' },
+                    { script: 'おちゃ', rom: 'o-cha', en: 'Green Tea', cat: 'Food & Cafe', tip: 'ち + small ゃ combines into "cha"' },
+                    { script: 'かんぱい', rom: 'kan-pa-i', en: 'Cheers!', cat: 'Food & Cafe', tip: 'Literally "Dry the glass!"' },
+                    // Pop Culture & Slang (8)
+                    { script: 'すごい', rom: 'su-go-i', en: 'Amazing / Incredible!', cat: 'Pop Culture & Slang', tip: 'Casual slang often becomes すげー (sugē)' },
+                    { script: 'かわいい', rom: 'ka-wa-i-i', en: 'Cute / Adorable', cat: 'Pop Culture & Slang', tip: 'Core word of Japanese pop culture' },
+                    { script: 'やばい', rom: 'ya-ba-i', en: 'Crazy / Insane (Good or Bad!)', cat: 'Pop Culture & Slang', tip: 'Like "OMG" or "Unreal" depending on tone' },
+                    { script: 'まじで', rom: 'ma-ji-de', en: 'Seriously? / For real?', cat: 'Pop Culture & Slang', tip: 'Top casual youth expression' },
+                    { script: 'がんばって', rom: 'gan-bat-te', en: 'Do your best! / Good luck!', cat: 'Pop Culture & Slang', tip: 'Small っ doubles the "t" sound' },
+                    { script: 'おし', rom: 'o-shi', en: 'My favorite idol / character', cat: 'Pop Culture & Slang', tip: 'Equivalent to Korean "Bias" (推し)' },
+                    { script: 'なつかしい', rom: 'na-tsu-ka-shi-i', en: 'Nostalgic / Brings back memories', cat: 'Pop Culture & Slang', tip: 'Warm feeling when seeing childhood things' },
+                    { script: 'めちゃくちゃ', rom: 'me-cha-ku-cha', en: 'Super / Extremely', cat: 'Pop Culture & Slang', tip: 'めちゃくちゃ おいしい = Crazy delicious!' },
+                    // Travel & Places (8)
+                    { script: 'えき', rom: 'e-ki', en: 'Train Station', cat: 'Travel & Places', tip: 'とうきょうえき = Tokyo Station' },
+                    { script: 'きっぷ', rom: 'kip-pu', en: 'Ticket', cat: 'Travel & Places', tip: 'Small っ + ぷ creates a crisp double "pp"' },
+                    { script: 'トイレは どこですか', rom: 'to-i-re wa do-ko de-su ka', en: 'Where is the restroom?', cat: 'Travel & Places', tip: 'どこですか = "Where is it?"' },
+                    { script: 'いくらですか', rom: 'i-ku-ra de-su ka', en: 'How much is it?', cat: 'Travel & Places', tip: 'Essential for markets and souvenir shops' },
+                    { script: 'おかいけい', rom: 'o-ka-i-ke-i', en: 'The bill / check, please', cat: 'Travel & Places', tip: 'Say "Okaikei onegaishimasu" at restaurants' },
+                    { script: 'コンビニ', rom: 'kon-bi-ni', en: 'Convenience Store', cat: 'Travel & Places', tip: '7-Eleven, Lawson, FamilyMart' },
+                    { script: 'くうこう', rom: 'ku-u-ko-u', en: 'Airport', cat: 'Travel & Places', tip: 'Both vowels are held for 2 beats (kūkō)' },
+                    { script: 'でぐち', rom: 'de-gu-chi', en: 'Exit', cat: 'Travel & Places', tip: 'Look for yellow でぐち (出口) signs in stations' },
+                    // Feelings & Vibes (8)
+                    { script: 'うれしい', rom: 'u-re-shi-i', en: 'Happy / Glad', cat: 'Feelings & Vibes', tip: 'Used when receiving good news or a gift' },
+                    { script: 'たのしい', rom: 'ta-no-shi-i', en: 'Fun / Enjoyable', cat: 'Feelings & Vibes', tip: 'にほんごは たのしい = Japanese is fun!' },
+                    { script: 'つかれた', rom: 'tsu-ka-re-ta', en: 'I am exhausted / tired', cat: 'Feelings & Vibes', tip: 'Casual expression after work or walking' },
+                    { script: 'おなか すいた', rom: 'o-na-ka su-i-ta', en: 'I am hungry', cat: 'Feelings & Vibes', tip: 'Literally "Stomach became empty"' },
+                    { script: 'ドキドキ', rom: 'do-ki-do-ki', en: 'Heart pounding (Excitement)', cat: 'Feelings & Vibes', tip: 'Onomatopoeia for a fast heartbeat' },
+                    { script: 'ワクワク', rom: 'wa-ku-wa-ku', en: 'Thrilled / Can’t wait!', cat: 'Feelings & Vibes', tip: 'Onomatopoeia for joyful anticipation' },
+                    { script: 'だいすき', rom: 'da-i-su-ki', en: 'I really like / love you', cat: 'Feelings & Vibes', tip: 'Final "i" in suki is often whispered' },
+                    { script: 'ねむい', rom: 'ne-mu-i', en: 'Sleepy', cat: 'Feelings & Vibes', tip: 'Very common late-night study mood' },
+                    // Numbers & Actions (8)
+                    { script: 'いち に さん', rom: 'i-chi ni san', en: 'One, Two, Three', cat: 'Numbers & Actions', tip: 'Foundation of Japanese counting' },
+                    { script: 'ひとつ ふたつ', rom: 'hi-to-tsu fu-ta-tsu', en: '1 item, 2 items (Counter)', cat: 'Numbers & Actions', tip: 'Universal counter for ordering food items!' },
+                    { script: 'いく / くる', rom: 'i-ku / ku-ru', en: 'To go / To come', cat: 'Numbers & Actions', tip: 'Core movement verbs' },
+                    { script: 'たべる / のむ', rom: 'ta-be-ru / no-mu', en: 'To eat / To drink', cat: 'Numbers & Actions', tip: 'Essential dining verbs' },
+                    { script: 'みる / きく', rom: 'mi-ru / ki-ku', en: 'To watch / To listen', cat: 'Numbers & Actions', tip: 'アニメを みる = Watch anime' },
+                    { script: 'きょう / あした', rom: 'kyo-u / a-shi-ta', en: 'Today / Tomorrow', cat: 'Numbers & Actions', tip: 'Everyday time nouns' },
+                    { script: 'いま', rom: 'i-ma', en: 'Right now', cat: 'Numbers & Actions', tip: 'いま なんじですか = What time is it now?' },
+                    { script: 'わかる', rom: 'wa-ka-ru', en: 'To understand', cat: 'Numbers & Actions', tip: 'わかりました = Got it / Understood!' }
+                ],
+                stories: [
+                    {
+                        label: '🍜 Tokyo Ramen Shop',
+                        text: 'すみません ラーメンと おちゃを ください ありがとうございます',
+                        translation: '"Excuse me! Ramen and green tea, please. Thank you very much!"'
+                    },
+                    {
+                        label: '✨ Anime & Friends Vibe',
+                        text: 'こんにちは きょうは とても たのしいですね すごい',
+                        translation: '"Hello! Today is super fun, isn\'t it? Amazing!" (きょうは → kyō wa)'
+                    },
+                    {
+                        label: '🚅 Train Station Ticket',
+                        text: 'とうきょうで きっぷを かった コーヒーを のむ',
+                        translation: '"Bought a ticket in Tokyo. Drinking coffee." (Notice っ in きっぷ kip-pu)'
+                    }
+                ]
+            },
+
+            ru: {
+                name: 'Russian',
+                scriptName: 'Cyrillic',
+                flag: '🇷🇺',
+                ttsLang: 'ru-RU',
+                heroTitle: 'Master the Cyrillic Alphabet & Russian Words',
+                heroDesc: 'Cyrillic looks mysterious, but you already know half the letters! Watch out for "False Friends" (like Р which sounds like R, and В which sounds like V) and master 48+ Russian words.',
+                roadmap: [
+                    {
+                        step: 'Step 1',
+                        title: 'True Friends (А, К, М, О, Т)',
+                        sub: 'Letters identical to English!',
+                        desc: 'These 5 Cyrillic letters look and sound just like their Latin cousins. You can read Russian words right now!',
+                        examples: [
+                            { char: 'Кот', rom: 'kot', tip: 'Cat (К + о + т)' },
+                            { char: 'Там', rom: 'tam', tip: 'There (Т + а + м)' },
+                            { char: 'Мама', rom: 'mama', tip: 'Mom (М + а + м + а)' }
+                        ],
+                        targetPage: 'alphabet',
+                        targetGroup: 'True Friends & Vowels'
+                    },
+                    {
+                        step: 'Step 2',
+                        title: 'False Friends (В, Н, Р, С, У, Х)',
+                        sub: 'Look like English, sound different!',
+                        desc: 'Don’t get tricked! In Russian, Р is a rolled "R", В is "V", Н is "N", and С is "S".',
+                        examples: [
+                            { char: 'В', rom: 'v', tip: 'Looks like B, sounds like V in Vladivostok!' },
+                            { char: 'Р', rom: 'r', tip: 'Looks like P, sounds like rolled R in Pectopah (Restaurant)' },
+                            { char: 'Н', rom: 'n', tip: 'Looks like H, sounds like N in Nyet' },
+                            { char: 'С', rom: 's', tip: 'Looks like C, sounds like S' }
+                        ],
+                        targetPage: 'alphabet',
+                        targetGroup: 'False Friends Trap'
+                    },
+                    {
+                        step: 'Step 3',
+                        title: 'Unique Cyrillic Heroes (Ж, Д, Ш, Я)',
+                        sub: 'Iconic Slavic shapes',
+                        desc: 'Meet the letters derived from Greek and Glagolitic that give Russian its rich sound.',
+                        examples: [
+                            { char: 'Ж', rom: 'zh', tip: 'Looks like a buzzing beetle → "zh" as in treasure' },
+                            { char: 'П', rom: 'p', tip: 'Greek Pi (π) → sounds like P' },
+                            { char: 'Я', rom: 'ya', tip: 'Backwards R → means "I" and sounds like "ya"' }
+                        ],
+                        targetPage: 'alphabet',
+                        targetGroup: 'Unique Cyrillic'
+                    },
+                    {
+                        step: 'Step 4',
+                        title: '48+ Real Russian Words',
+                        sub: 'Cafe, Slang, Travel & Soul',
+                        desc: 'Practice reading real Russian words and phrases with our interactive card library and games.',
+                        examples: [
+                            { char: 'Привет', rom: 'privyet', tip: 'Hi / Hey!' },
+                            { char: 'Спасибо', rom: 'spasibo', tip: 'Thank you' },
+                            { char: 'Круто', rom: 'kruto', tip: 'Cool / Awesome!' }
+                        ],
+                        targetPage: 'words',
+                        targetGroup: null
+                    }
+                ],
+                alphabetGroups: ['True Friends & Vowels', 'False Friends Trap', 'Unique Cyrillic'],
+                alphabet: [
+                    // True Friends & Vowels
+                    { char: 'А', rom: 'a', group: 'True Friends & Vowels', sound: 'Like "a" in father', mnemonic: 'True friend! Same as Latin A', example: 'Анна (Anna)' },
+                    { char: 'О', rom: 'o', group: 'True Friends & Vowels', sound: '"o" when stressed, "a" when unstressed', mnemonic: 'True friend! Round O', example: 'Окно (okno) = Window' },
+                    { char: 'Е', rom: 'ye', group: 'True Friends & Vowels', sound: 'Like "ye" in yes', mnemonic: 'Looks like E, adds a "Y" glide → Ye!', example: 'Если (yesli) = If' },
+                    { char: 'Ё', rom: 'yo', group: 'True Friends & Vowels', sound: 'Like "yo" in yonder (always stressed)', mnemonic: 'Е with two eyes on top shouting "Yo!"', example: 'Ёлка (yolka) = Fir tree' },
+                    { char: 'И', rom: 'i', group: 'True Friends & Vowels', sound: 'Like "ee" in meet', mnemonic: 'Backwards N looks like a picket fence → "ee"', example: 'Игра (igra) = Game' },
+                    { char: 'Э', rom: 'e', group: 'True Friends & Vowels', sound: 'Pure "eh" as in echo', mnemonic: 'Round mouth with a tongue sticking out → "Eh"', example: 'Это (eto) = This is' },
+                    { char: 'Ю', rom: 'yu', group: 'True Friends & Vowels', sound: 'Like "you"', mnemonic: 'Looks like 10 (I-O) → "I Owe You!"', example: 'Юг (yug) = South' },
+                    { char: 'Я', rom: 'ya', group: 'True Friends & Vowels', sound: 'Like "ya" in yard', mnemonic: 'Backwards R pointing at yourself → "Ya" (means "I"!)', example: 'Яблоко (yabloko) = Apple' },
+                    { char: 'К', rom: 'k', group: 'True Friends & Vowels', sound: 'Crisp "k"', mnemonic: 'True friend! Same as Latin K', example: 'Кот (kot) = Cat' },
+                    { char: 'М', rom: 'm', group: 'True Friends & Vowels', sound: 'Like "m" in mom', mnemonic: 'True friend! Same as Latin M', example: 'Мир (mir) = Peace / World' },
+                    { char: 'Т', rom: 't', group: 'True Friends & Vowels', sound: 'Crisp dental "t"', mnemonic: 'True friend! Same as Latin T', example: 'Там (tam) = There' },
+                    // False Friends Trap
+                    { char: 'В', rom: 'v', group: 'False Friends Trap', sound: 'Like "v" in victory', mnemonic: 'FALSE FRIEND! Looks like B, sounds like V (Vlad)', example: 'Вода (voda) = Water' },
+                    { char: 'Н', rom: 'n', group: 'False Friends Trap', sound: 'Like "n" in no', mnemonic: 'FALSE FRIEND! Looks like H, sounds like N', example: 'Нет (nyet) = No' },
+                    { char: 'Р', rom: 'r', group: 'False Friends Trap', sound: 'Rolled "r"', mnemonic: 'FALSE FRIEND! Looks like P, rolled R', example: 'Россия (Rossiya) = Russia' },
+                    { char: 'С', rom: 's', group: 'False Friends Trap', sound: 'Like "s" in sun', mnemonic: 'FALSE FRIEND! Looks like C, always sounds like S', example: 'Сок (sok) = Juice' },
+                    { char: 'У', rom: 'u', group: 'False Friends Trap', sound: 'Like "oo" in boot', mnemonic: 'FALSE FRIEND! Looks like Y, sounds like "oo"', example: 'Утро (utro) = Morning' },
+                    { char: 'Х', rom: 'kh', group: 'False Friends Trap', sound: 'Raspy "h" like Bach / Loch', mnemonic: 'FALSE FRIEND! Looks like X, sounds like breathy Kh', example: 'Хлеб (khleb) = Bread' },
+                    // Unique Cyrillic
+                    { char: 'Б', rom: 'b', group: 'Unique Cyrillic', sound: 'Like "b" in boy', mnemonic: 'Looks like a pregnant B with a top shelf → B', example: 'Брат (brat) = Brother' },
+                    { char: 'Г', rom: 'g', group: 'Unique Cyrillic', sound: 'Like "g" in go', mnemonic: 'Looks like a Gallows / street lamp → G', example: 'Город (gorod) = City' },
+                    { char: 'Д', rom: 'd', group: 'Unique Cyrillic', sound: 'Like "d" in door', mnemonic: 'Looks like a house Door on two legs → D', example: 'Дом (dom) = House' },
+                    { char: 'Ж', rom: 'zh', group: 'Unique Cyrillic', sound: 'Like "s" in treasure', mnemonic: 'Looks like a buzzing beetle → "Zhhh"', example: 'Жизнь (zhizn) = Life' },
+                    { char: 'З', rom: 'z', group: 'Unique Cyrillic', sound: 'Like "z" in zoo', mnemonic: 'Curvy cursive Z (not the number 3!)', example: 'Зима (zima) = Winter' },
+                    { char: 'Л', rom: 'l', group: 'Unique Cyrillic', sound: 'Like "l" in lamp', mnemonic: 'Two Legs walking → L', example: 'Любовь (lyubov) = Love' },
+                    { char: 'П', rom: 'p', group: 'Unique Cyrillic', sound: 'Like "p" in pet', mnemonic: 'Math Pi (π) symbol → P!', example: 'Парк (park) = Park' },
+                    { char: 'Ф', rom: 'f', group: 'Unique Cyrillic', sound: 'Like "f" in fan', mnemonic: 'Person standing with hands on hips ("Fabulous!") → F', example: 'Фото (foto) = Photo' },
+                    { char: 'Ч', rom: 'ch', group: 'Unique Cyrillic', sound: 'Like "ch" in chair', mnemonic: 'Looks like an upside-down Chair (4) → Ch', example: 'Чай (chay) = Tea' },
+                    { char: 'Ш', rom: 'sh', group: 'Unique Cyrillic', sound: 'Hard "sh" in ship', mnemonic: 'Three vertical chimneys blowing "Shhh"', example: 'Школа (shkola) = School' },
+                    { char: 'Ы', rom: 'y (deep)', group: 'Unique Cyrillic', sound: 'Deep vowel between i and u', mnemonic: 'Say "ee" while pulling your tongue back', example: 'Ты (ty) = You' },
+                    { char: 'Ь', rom: 'soft sign', group: 'Unique Cyrillic', sound: 'Softens preceding consonant', mnemonic: 'Silent helper that palatalizes the letter before it', example: 'День (dyen) = Day' }
+                ],
+                words: [
+                    // Essentials (8)
+                    { script: 'Привет', rom: 'pri-vyet', en: 'Hi / Hey (Friendly)', cat: 'Essentials', tip: 'Most common greeting among friends' },
+                    { script: 'Здравствуйте', rom: 'zdrast-vuy-tye', en: 'Hello (Formal)', cat: 'Essentials', tip: 'First в is silent; literally "Be healthy!"' },
+                    { script: 'Спасибо', rom: 'spa-si-ba', en: 'Thank you', cat: 'Essentials', tip: 'Unstressed final о sounds like "a"' },
+                    { script: 'Пожалуйста', rom: 'pa-zha-lus-ta', en: 'Please / You’re welcome', cat: 'Essentials', tip: 'Works for both requesting and replying to thanks!' },
+                    { script: 'Извините', rom: 'iz-vi-ni-tye', en: 'Excuse me / Sorry', cat: 'Essentials', tip: 'Polite way to get attention' },
+                    { script: 'Да / Нет', rom: 'da / nyet', en: 'Yes / No', cat: 'Essentials', tip: 'Classic Russian essentials' },
+                    { script: 'Доброе утро', rom: 'dob-ra-ye ut-ra', en: 'Good morning', cat: 'Essentials', tip: 'Literally "Kind morning"' },
+                    { script: 'Пока', rom: 'pa-ka', en: 'Bye! (Casual)', cat: 'Essentials', tip: 'Used just like "See ya!"' },
+                    // Food & Cafe (8)
+                    { script: 'Борщ', rom: 'borshch', en: 'Beet Soup (Borscht)', cat: 'Food & Cafe', tip: 'Iconic soup served with sour cream' },
+                    { script: 'Пельмени', rom: 'pyel-mye-ni', en: 'Russian Dumplings', cat: 'Food & Cafe', tip: 'Ь softens the Л!' },
+                    { script: 'Блины', rom: 'bli-ny', en: 'Thin Crepes / Pancakes', cat: 'Food & Cafe', tip: 'Uses the deep Ы vowel at the end' },
+                    { script: 'Кофе и Чай', rom: 'ko-fye i chay', en: 'Coffee and Tea', cat: 'Food & Cafe', tip: 'и means "and"' },
+                    { script: 'Вода без газа', rom: 'va-da byez ga-za', en: 'Still water (no gas)', cat: 'Food & Cafe', tip: 'Very useful when ordering water in restaurants' },
+                    { script: 'Очень вкусно', rom: 'o-chyen vkus-na', en: 'Very delicious!', cat: 'Food & Cafe', tip: 'Вкусно = tasty' },
+                    { script: 'Счёт', rom: 'shchyot', en: 'The bill / check', cat: 'Food & Cafe', tip: 'С+ч blends into a soft shch sound' },
+                    { script: 'Хлеб и Сыр', rom: 'khlyeb i syr', en: 'Bread and Cheese', cat: 'Food & Cafe', tip: 'Everyday staples' },
+                    // Pop Culture & Slang (8)
+                    { script: 'Круто', rom: 'kru-ta', en: 'Cool / Awesome!', cat: 'Pop Culture & Slang', tip: 'Literally "Steep", used just like "Cool!"' },
+                    { script: 'Кайф', rom: 'kayf', en: 'Pure bliss / Great vibes', cat: 'Pop Culture & Slang', tip: 'Super popular modern slang for enjoying the moment' },
+                    { script: 'Давай', rom: 'da-vay', en: 'Let’s go! / Come on! / Bye', cat: 'Pop Culture & Slang', tip: 'The most versatile word in Russian speech' },
+                    { script: 'Топ', rom: 'top', en: 'Top-tier / The best', cat: 'Pop Culture & Slang', tip: 'Это просто топ! = That is simply the best!' },
+                    { script: 'Жесть', rom: 'zhest', en: 'Wild / Crazy / Intense', cat: 'Pop Culture & Slang', tip: 'Used when reacting to shocking news' },
+                    { script: 'Друг', rom: 'druk', en: 'Friend', cat: 'Pop Culture & Slang', tip: 'Final г devoices to a "k" sound!' },
+                    { script: 'Красота', rom: 'kra-sa-ta', en: 'Beauty / Gorgeous!', cat: 'Pop Culture & Slang', tip: 'Exclaimed when seeing a great view' },
+                    { script: 'Молодец', rom: 'ma-la-dyets', en: 'Well done! / Good job!', cat: 'Pop Culture & Slang', tip: 'High praise for someone who succeeded' },
+                    // Travel & Places (8)
+                    { script: 'Метро', rom: 'myet-ro', en: 'Subway / Metro', cat: 'Travel & Places', tip: 'Look for big red М signs' },
+                    { script: 'Аэропорт', rom: 'a-e-ra-port', en: 'Airport', cat: 'Travel & Places', tip: 'Easy cognate to read in Cyrillic' },
+                    { script: 'Ресторан', rom: 'ryes-ta-ran', en: 'Restaurant', cat: 'Travel & Places', tip: 'Classic False Friends test: Р=r, с=s, н=n!' },
+                    { script: 'Где туалет', rom: 'gdye tu-a-lyet', en: 'Where is the restroom?', cat: 'Travel & Places', tip: 'Где (gdye) = Where' },
+                    { script: 'Сколько стоит', rom: 'skol-ka sto-it', en: 'How much does it cost?', cat: 'Travel & Places', tip: 'Essential shopping phrase' },
+                    { script: 'Билет', rom: 'bi-lyet', en: 'Ticket', cat: 'Travel & Places', tip: 'Used for trains, museums, and concerts' },
+                    { script: 'Аптека', rom: 'ap-tye-ka', en: 'Pharmacy', cat: 'Travel & Places', tip: 'Look for green cross signs' },
+                    { script: 'Выход', rom: 'vy-khat', en: 'Exit', cat: 'Travel & Places', tip: 'Important sign in stations and airports' },
+                    // Feelings & Vibes (8)
+                    { script: 'Хорошо', rom: 'kha-ra-sho', en: 'Good / Fine / Okay', cat: 'Feelings & Vibes', tip: 'Notice the two unstressed O’s sound like "a"!' },
+                    { script: 'Счастье', rom: 'shchas-tye', en: 'Happiness', cat: 'Feelings & Vibes', tip: 'Warm poetic word' },
+                    { script: 'Любовь', rom: 'lyu-bof', en: 'Love', cat: 'Feelings & Vibes', tip: 'Final вь devoices to soft "f"' },
+                    { script: 'Я устал', rom: 'ya us-tal', en: 'I am tired', cat: 'Feelings & Vibes', tip: 'Used by male speakers (устала for female)' },
+                    { script: 'Я скучаю', rom: 'ya sku-cha-yu', en: 'I miss you', cat: 'Feelings & Vibes', tip: 'Literally "I am longing"' },
+                    { script: 'Весело', rom: 'vye-sye-la', en: 'Fun / Joyful', cat: 'Feelings & Vibes', tip: 'Great party or hangout vibe' },
+                    { script: 'Спокойно', rom: 'spa-koy-na', en: 'Calm / Peaceful', cat: 'Feelings & Vibes', tip: 'Спокойной ночи = Good night' },
+                    { script: 'Душа', rom: 'du-sha', en: 'Soul / Heart', cat: 'Feelings & Vibes', tip: 'От души = From the bottom of my heart' },
+                    // Numbers & Actions (8)
+                    { script: 'Один Два Три', rom: 'a-din dva tri', en: 'One, Two, Three', cat: 'Numbers & Actions', tip: 'Core Russian numbers' },
+                    { script: 'Идти / Ехать', rom: 'it-ti / ye-khat', en: 'To go (on foot / by vehicle)', cat: 'Numbers & Actions', tip: 'Russian distinguishes walking vs riding!' },
+                    { script: 'Есть / Пить', rom: 'yest / pit', en: 'To eat / To drink', cat: 'Numbers & Actions', tip: 'Essential dining verbs' },
+                    { script: 'Знать / Понимать', rom: 'znat / pa-ni-mat', en: 'To know / To understand', cat: 'Numbers & Actions', tip: 'Я понимаю = I understand' },
+                    { script: 'Говорить', rom: 'ga-va-rit', en: 'To speak', cat: 'Numbers & Actions', tip: 'Говорить по-русски = Speak Russian' },
+                    { script: 'Сегодня / Завтра', rom: 'si-vod-nya / zav-tra', en: 'Today / Tomorrow', cat: 'Numbers & Actions', tip: 'г in сегодня sounds like "v"!' },
+                    { script: 'Сейчас', rom: 'siy-chas', en: 'Right now', cat: 'Numbers & Actions', tip: 'Very frequent time word' },
+                    { script: 'Смотреть', rom: 'smat-ryet', en: 'To watch / look', cat: 'Numbers & Actions', tip: 'Смотреть фильм = Watch a movie' }
+                ],
+                stories: [
+                    {
+                        label: '☕ Moscow Cafe Order',
+                        text: 'Привет Кофе и блины пожалуйста Спасибо друг',
+                        translation: '"Hi! Coffee and crepes, please. Thank you, friend!" (Notice друг pronounced druk)'
+                    },
+                    {
+                        label: '🕵️ False Friends Challenge',
+                        text: 'Ресторан в Москве очень красивый',
+                        translation: '"The restaurant in Moscow is very beautiful." (Р=R, с=s, н=n, в=v!)'
+                    },
+                    {
+                        label: '✨ Warm Russian Vibes',
+                        text: 'Доброе утро Сегодня всё хорошо и весело',
+                        translation: '"Good morning! Today everything is good and fun."'
+                    }
+                ]
+            }
+        };
+
+        /********************************************************************
+         * 2. UNICODE HANGUL & KANA/CYRILLIC SMART READER ANALYZER
+         ********************************************************************/
+        const KO_CHO = ['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
+        const KO_CHO_CHAR = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+        const KO_JUNG = ['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
+        const KO_JUNG_CHAR = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+        const KO_JONG = ['','k','k','k','n','n','n','t','l','k','m','l','l','l','p','l','m','p','p','t','t','ng','t','t','k','t','p','t'];
+        const KO_JONG_CHAR = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+
+        function analyzeReaderText(text, applyRules = true) {
+            const chars = Array.from(text);
+            const tokens = chars.map(ch => {
+                const code = ch.charCodeAt(0);
+                // Hangul Block
+                if (code >= 0xAC00 && code <= 0xD7A3) {
+                    const offset = code - 0xAC00;
+                    const c = Math.floor(offset / 588);
+                    const j = Math.floor((offset % 588) / 28);
+                    const g = offset % 28;
+                    const lit = KO_CHO[c] + KO_JUNG[j] + KO_JONG[g];
+                    return {
+                        isScript: true, type: 'Hangul', char: ch,
+                        choChar: KO_CHO_CHAR[c], jungChar: KO_JUNG_CHAR[j], jongChar: KO_JONG_CHAR[g],
+                        choRom: KO_CHO[c] || 'silent', jungRom: KO_JUNG[j], jongRom: KO_JONG[g] || 'none',
+                        literalRom: lit, phoneticRom: lit, ruleNote: null
+                    };
+                }
+                // Check Alphabet DB for Japanese or Russian match
+                const jaMatch = APP_DB.ja.alphabet.find(a => a.char === ch);
+                if (jaMatch) {
+                    const cleanRom = jaMatch.rom.replace(' (Kata)', '').replace(' (wa)', '');
+                    return {
+                        isScript: true, type: 'Kana', char: ch,
+                        literalRom: cleanRom, phoneticRom: cleanRom,
+                        ruleNote: jaMatch.mnemonic
+                    };
+                }
+                const ruMatch = APP_DB.ru.alphabet.find(a => a.char.toLowerCase() === ch.toLowerCase());
+                if (ruMatch) {
+                    return {
+                        isScript: true, type: 'Cyrillic', char: ch,
+                        literalRom: ruMatch.rom, phoneticRom: ruMatch.rom,
+                        ruleNote: ruMatch.mnemonic
+                    };
+                }
+                // Fallback for additional Kana/Cyrillic in stories
+                const extraKana = {
+                    'げ':'ge','き':'ki','で':'de','す':'su','か':'ka','と':'to','う':'u','ょ':'yo','ー':'-',
+                    'を':'o','む':'mu','っ':'(double)','ぷ':'pu','ざ':'za','し':'shi','た':'ta','り':'ri','ご':'go','い':'i','ま':'ma','ね':'ne'
+                };
+                if (extraKana[ch]) {
+                    return { isScript: true, type: 'Kana', char: ch, literalRom: extraKana[ch], phoneticRom: extraKana[ch], ruleNote: null };
+                }
+                const extraRu = {
+                    'в':'v','е':'ye','и':'i','й':'y','л':'l','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','х':'kh','ч':'ch','ш':'sh','щ':'shch','ы':'y','ь':'ʹ','я':'ya','ю':'yu','д':'d','г':'g','б':'b','з':'z','ж':'zh','к':'k','м':'m','а':'a','ё':'yo'
+                };
+                if (extraRu[ch.toLowerCase()]) {
+                    return { isScript: true, type: 'Cyrillic', char: ch, literalRom: extraRu[ch.toLowerCase()], phoneticRom: extraRu[ch.toLowerCase()], ruleNote: null };
+                }
+                return { isScript: false, char: ch, literalRom: ch, phoneticRom: ch };
+            });
+
+            // Apply Korean Batchim cross-syllable rules if enabled
+            if (applyRules && currentLang === 'ko') {
+                for (let i = 0; i < tokens.length - 1; i++) {
+                    const cur = tokens[i];
+                    const nxt = tokens[i + 1];
+                    if (cur.type !== 'Hangul' || nxt.type !== 'Hangul') continue;
+                    // Liaison into silent ㅇ
+                    if (cur.jongChar && cur.jongChar !== 'ㅇ' && nxt.choChar === 'ㅇ') {
+                        const carryMap = { 'ㄱ':'g', 'ㄴ':'n', 'ㄷ':'d', 'ㄹ':'r', 'ㅁ':'m', 'ㅂ':'b', 'ㅅ':'s', 'ㅆ':'ss', 'ㅈ':'j', 'ㅊ':'ch', 'ㅋ':'k', 'ㅌ':'t', 'ㅍ':'p' };
+                        if (carryMap[cur.jongChar]) {
+                            cur.phoneticRom = (cur.choRom === 'silent' ? '' : cur.choRom) + cur.jungRom;
+                            nxt.phoneticRom = carryMap[cur.jongChar] + nxt.jungRom + (nxt.jongRom === 'none' ? '' : nxt.jongRom);
+                            const msg = `Liaison Rule: Final '${cur.jongChar}' glides over into silent 'ㅇ' of '${nxt.char}'!`;
+                            cur.ruleNote = msg; nxt.ruleNote = msg;
+                        }
+                    }
+                    // Nasalization ㄱ + ㄹ/ㄴ/ㅁ -> ng + n/m
+                    if (['ㄱ','ㅋ','ㄲ'].includes(cur.jongChar) && ['ㄹ','ㄴ','ㅁ'].includes(nxt.choChar)) {
+                        const nSound = nxt.choChar === 'ㅁ' ? 'm' : 'n';
+                        cur.phoneticRom = (cur.choRom === 'silent' ? '' : cur.choRom) + cur.jungRom + 'ng';
+                        nxt.phoneticRom = nSound + nxt.jungRom + (nxt.jongRom === 'none' ? '' : nxt.jongRom);
+                        const msg = `Nasal Assimilation: '${cur.jongChar}' + '${nxt.choChar}' blends into "ng-${nSound}"!`;
+                        cur.ruleNote = msg; nxt.ruleNote = msg;
+                    }
+                    // Labial Nasalization ㅂ + ㄴ/ㅁ -> m + n/m
+                    if (['ㅂ','ㅍ'].includes(cur.jongChar) && ['ㄴ','ㅁ'].includes(nxt.choChar)) {
+                        const nSound = nxt.choChar === 'ㅁ' ? 'm' : 'n';
+                        cur.phoneticRom = (cur.choRom === 'silent' ? '' : cur.choRom) + cur.jungRom + 'm';
+                        nxt.phoneticRom = nSound + nxt.jungRom + (nxt.jongRom === 'none' ? '' : nxt.jongRom);
+                        const msg = `Nasal Assimilation: '${cur.jongChar}' before '${nxt.choChar}' softens to "m"!`;
+                        cur.ruleNote = msg; nxt.ruleNote = msg;
+                    }
+                }
+            }
+            return tokens;
+        }
+
+        /********************************************************************
+         * 3. STATE & LOCALSTORAGE PERSISTENCE
+         ********************************************************************/
+        let currentLang = 'ko';
+        let currentPage = 'home';
+        let currentAlphaGroup = 'Basic Vowels';
+        let selectedAlphaIndex = 0;
+        let currentVocabCategory = 'All';
+        let currentArcadeGame = 'memory';
+        let selectedReaderTokenIndex = 0;
+        let currentNotesFilter = 'all';
+
+        // Persistent User State
+        let userState = {
+            xp: 120,
+            learnedAlpha: { ko: ['ㅏ','ㅗ','ㄱ','ㄴ','ㅁ'], ja: ['あ','い','う','ん'], ru: ['А','О','К','М','Т'] },
+            learnedWords: { ko: ['안녕하세요'], ja: ['こんにちは'], ru: ['Привет'] },
+            notes: [
+                {
+                    id: 'n1',
+                    lang: 'ko',
+                    tag: 'Grammar / Sound',
+                    title: '독립 (dong-nip) Batchim Trick',
+                    content: 'Whenever ㄱ (k) comes right before ㄹ (r) or ㄴ (n), it softens into "ng + n" so your mouth doesn’t get stuck!'
+                },
+                {
+                    id: 'n2',
+                    lang: 'ja',
+                    tag: 'Mnemonic',
+                    title: 'き (ki) vs さ (sa)',
+                    content: 'き (ki) has two horizontal bars like teeth on a skeleton KEY. さ (sa) only has one bar!'
+                },
+                {
+                    id: 'n3',
+                    lang: 'ru',
+                    tag: 'Mnemonic',
+                    title: 'Ресторан (Restaurant) False Friends',
+                    content: 'Looks like Pectopah, but Р = R, с = S, н = N → Res-to-ran!'
+                }
+            ]
+        };
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem('scriptxray_v2_state');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    userState = { ...userState, ...parsed };
+                }
+            } catch (e) {
+                console.warn('Storage read skipped', e);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('scriptxray_v2_state', JSON.stringify(userState));
+            } catch (e) {
+                console.warn('Storage write skipped', e);
+            }
+            updateHeaderStats();
+        }
+
+        function addXp(amount, reason) {
+            userState.xp += amount;
+            saveState();
+            showToast(`+${amount} XP • ${reason}`, 'sky');
+        }
+
+        function showToast(message, color = 'sky') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const colorClasses = color === 'emerald'
+                ? 'bg-emerald-500 text-zinc-950'
+                : color === 'amber'
+                ? 'bg-amber-500 text-zinc-950'
+                : 'bg-sky-500 text-zinc-950';
+            toast.className = `${colorClasses} font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 animate-pop`;
+            toast.innerHTML = `<span>✨</span><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.25s ease';
+                setTimeout(() => toast.remove(), 260);
+            }, 2400);
+        }
+
+        /********************************************************************
+         * 4. NAVIGATION, LANGUAGE & THEME CONTROLLERS
+         ********************************************************************/
+        function navigateTo(pageId) {
+            currentPage = pageId;
+            document.querySelectorAll('.page-view').forEach(sec => {
+                sec.classList.add('hidden');
+                sec.classList.remove('page-enter');
+            });
+            const activeSec = document.getElementById(`page-${pageId}`);
+            if (activeSec) {
+                activeSec.classList.remove('hidden');
+                void activeSec.offsetWidth;
+                activeSec.classList.add('page-enter');
+            }
+
+            // Update Nav Tab Highlight
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                if (btn.dataset.page === pageId) {
+                    btn.className = 'nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all bg-sky-500 text-zinc-950 shadow-sm';
+                } else {
+                    btn.className = 'nav-tab flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60';
+                }
+            });
+
+            // Trigger page-specific renderers
+            if (pageId === 'home') renderHomePage();
+            if (pageId === 'alphabet') renderAlphabetPage();
+            if (pageId === 'words') renderWordLibrary();
+            if (pageId === 'arcade') selectArcadeGame(currentArcadeGame);
+            if (pageId === 'reader') renderReaderPageSetup();
+            if (pageId === 'notes') renderNotesPage();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            currentAlphaGroup = APP_DB[lang].alphabetGroups[0];
+            selectedAlphaIndex = 0;
+            currentVocabCategory = 'All';
+
+            // Update Language Buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.dataset.lang === lang) {
+                    btn.className = 'lang-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm border border-zinc-200/80 dark:border-zinc-700';
+                } else {
+                    btn.className = 'lang-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200';
+                }
+            });
+
+            document.getElementById('newNoteLang').value = lang;
+            navigateTo(currentPage);
+        }
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        function updateHeaderStats() {
+            document.getElementById('headerXpDisplay').textContent = `${userState.xp} XP`;
+            document.getElementById('headerNotesCount').textContent = `${userState.notes.length} Notes`;
+        }
+
+        /********************************************************************
+         * 5. PAGE 1: GUIDED PATH & HOME DASHBOARD
+         ********************************************************************/
+        function renderHomePage() {
+            const db = APP_DB[currentLang];
+            document.getElementById('homeHeroFlag').textContent = db.flag;
+            document.getElementById('homeHeroLangTag').textContent = `${db.name.toUpperCase()} (${db.scriptName.toUpperCase()}) TRACK`;
+            document.getElementById('homeHeroTitle').textContent = db.heroTitle;
+            document.getElementById('homeHeroDesc').textContent = db.heroDesc;
+
+            // Progress Stats
+            const alphaTotal = db.alphabet.length;
+            const alphaKnown = userState.learnedAlpha[currentLang].length;
+            const alphaPct = Math.min(100, Math.round((alphaKnown / alphaTotal) * 100));
+            document.getElementById('homeAlphaStat').textContent = `${alphaKnown} / ${alphaTotal}`;
+            document.getElementById('homeAlphaBar').style.width = `${alphaPct}%`;
+
+            const wordsTotal = db.words.length;
+            const wordsKnown = userState.learnedWords[currentLang].length;
+            const wordsPct = Math.min(100, Math.round((wordsKnown / wordsTotal) * 100));
+            document.getElementById('homeWordsStat').textContent = `${wordsKnown} / ${wordsTotal}`;
+            document.getElementById('homeWordsBar').style.width = `${wordsPct}%`;
+
+            const level = Math.floor(userState.xp / 100) + 1;
+            const ranks = ['Script Explorer', 'Syllable Striker', 'Phonetic Ninja', 'Polyglot Scholar', 'Script Grandmaster'];
+            const rankName = ranks[Math.min(ranks.length - 1, level - 1)];
+            document.getElementById('homeRankTitle').textContent = `Level ${level} • ${rankName}`;
+
+            // Render 4 Roadmap Cards
+            const grid = document.getElementById('homeRoadmapGrid');
+            grid.innerHTML = '';
+            db.roadmap.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'hover-lift bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-sm';
+                const exPills = item.examples.map(e => `<span class="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">${e.char} (${e.rom})</span>`).join('');
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-mono font-bold uppercase px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20">${item.step}</span>
+                            <span class="text-xs text-zinc-400 font-mono">0${idx + 1}</span>
+                        </div>
+                        <h3 class="font-bold text-base text-zinc-900 dark:text-white">${item.title}</h3>
+                        <p class="text-xs text-sky-600 dark:text-sky-400 font-medium mt-0.5">${item.sub}</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">${item.desc}</p>
+                        <div class="flex flex-wrap gap-1.5 mt-3">${exPills}</div>
+                    </div>
+                    <button onclick="openRoadmapLesson(${idx})" class="mt-4 w-full py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-sky-500 hover:text-zinc-950 text-zinc-800 dark:text-zinc-200 font-bold text-xs transition-all">
+                        Open Mini-Lesson →
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+
+            renderSpotlightWord();
+        }
+
+        function openRoadmapLesson(idx) {
+            const item = APP_DB[currentLang].roadmap[idx];
+            document.getElementById('lessonModalStepBadge').textContent = `${APP_DB[currentLang].flag} ${item.step} • INTERACTIVE LESSON`;
+            const body = document.getElementById('lessonModalBody');
+
+            const examplesHtml = item.examples.map(ex => `
+                <div onclick="speakText('${ex.char}')" class="cursor-pointer p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-sky-500 flex items-center justify-between transition-all">
+                    <div class="flex items-center gap-3.5">
+                        <span class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">${ex.char}</span>
+                        <div>
+                            <div class="text-sm font-mono font-bold text-sky-500">/${ex.rom}/</div>
+                            <div class="text-xs text-zinc-500 dark:text-zinc-400">${ex.tip}</div>
+                        </div>
+                    </div>
+                    <span class="text-xs px-2.5 py-1 rounded-lg bg-sky-500/10 text-sky-500 font-semibold">🔊 Listen</span>
+                </div>
+            `).join('');
+
+            body.innerHTML = `
+                <h3 class="text-xl font-extrabold text-zinc-900 dark:text-white">${item.title}</h3>
+                <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">${item.desc}</p>
+                <div class="text-xs font-mono uppercase text-zinc-400 pt-1">Click any example below to hear native audio:</div>
+                <div class="space-y-2.5">${examplesHtml}</div>
+            `;
+
+            const actionBtn = document.getElementById('lessonModalActionBtn');
+            actionBtn.onclick = () => {
+                addXp(25, `Completed ${item.step}`);
+                closeLessonModal();
+                if (item.targetGroup) currentAlphaGroup = item.targetGroup;
+                navigateTo(item.targetPage);
+            };
+
+            document.getElementById('lessonModal').classList.remove('hidden');
+        }
+
+        function closeLessonModal() {
+            document.getElementById('lessonModal').classList.add('hidden');
+        }
+
+        function renderSpotlightWord() {
+            const words = APP_DB[currentLang].words;
+            const w = words[Math.floor(Math.random() * words.length)];
+            const container = document.getElementById('spotlightContainer');
+            container.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-zinc-50 dark:bg-zinc-950 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+                    <div>
+                        <span class="text-[11px] font-mono uppercase text-sky-500 font-bold">${w.cat}</span>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white mt-1">${w.script}</div>
+                        <div class="text-sm font-mono text-fuchsia-500 font-semibold mt-1">/${w.rom}/</div>
+                        <div class="text-base font-bold text-zinc-800 dark:text-zinc-200 mt-1">"${w.en}"</div>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">💡 ${w.tip}</p>
+                    </div>
+                    <div class="flex sm:flex-col gap-2">
+                        <button onclick="speakText('${w.script}')" class="px-4 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-xs flex items-center justify-center gap-1.5">
+                            🔊 Listen
+                        </button>
+                        <button onclick="pinItemToNotes('${w.script}', '${w.rom} — ${w.en}', '${w.tip}', 'Pinned Word')" class="px-4 py-2.5 rounded-xl bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-xs">
+                            📌 Pin to Notes
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function saveQuickNote() {
+            const titleEl = document.getElementById('quickNoteTitle');
+            const bodyEl = document.getElementById('quickNoteBody');
+            const title = titleEl.value.trim();
+            const content = bodyEl.value.trim();
+            if (!title && !content) {
+                showToast('Write a title or note first!', 'amber');
+                return;
+            }
+            userState.notes.unshift({
+                id: 'n_' + Date.now(),
+                lang: currentLang,
+                tag: 'Personal',
+                title: title || 'Quick Study Note',
+                content: content || title
+            });
+            titleEl.value = '';
+            bodyEl.value = '';
+            addXp(15, 'Saved Study Note');
+        }
+
+        /********************************************************************
+         * 6. PAGE 2: INTERACTIVE ALPHABET ACADEMY
+         ********************************************************************/
+        function renderAlphabetPage() {
+            const db = APP_DB[currentLang];
+            document.getElementById('alphaPageTitle').textContent = `${db.flag} ${db.name} (${db.scriptName}) Alphabet Academy`;
+
+            // Group Tabs
+            const tabsContainer = document.getElementById('alphaGroupTabs');
+            tabsContainer.innerHTML = '';
+            db.alphabetGroups.forEach(grp => {
+                const btn = document.createElement('button');
+                const isActive = grp === currentAlphaGroup;
+                btn.className = `px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                    isActive
+                        ? 'bg-sky-500 text-zinc-950 shadow-sm'
+                        : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:border-sky-500/40'
+                }`;
+                btn.textContent = grp;
+                btn.onclick = () => {
+                    currentAlphaGroup = grp;
+                    selectedAlphaIndex = 0;
+                    renderAlphabetPage();
+                };
+                tabsContainer.appendChild(btn);
+            });
+
+            // Filter characters in current group
+            const groupChars = db.alphabet.filter(a => a.group === currentAlphaGroup);
+            const grid = document.getElementById('alphaCharGrid');
+            grid.innerHTML = '';
+
+            groupChars.forEach((item, idx) => {
+                const isKnown = userState.learnedAlpha[currentLang].includes(item.char);
+                const isSelected = idx === selectedAlphaIndex;
+                const btn = document.createElement('button');
+                btn.className = `hover-lift relative p-4 rounded-2xl border text-center transition-all flex flex-col items-center justify-center ${
+                    isSelected
+                        ? 'bg-sky-500/10 border-sky-500 ring-2 ring-sky-500/30'
+                        : isKnown
+                        ? 'bg-emerald-500/5 border-emerald-500/40'
+                        : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800'
+                }`;
+                btn.onclick = () => {
+                    selectedAlphaIndex = idx;
+                    speakText(item.char);
+                    renderAlphabetPage();
+                };
+                btn.innerHTML = `
+                    ${isKnown ? '<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400" title="Learned"></span>' : ''}
+                    <span class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white">${item.char}</span>
+                    <span class="text-xs font-mono font-bold text-sky-500 mt-1.5">${item.rom}</span>
+                `;
+                grid.appendChild(btn);
+            });
+
+            const activeItem = groupChars[selectedAlphaIndex] || groupChars[0];
+            if (activeItem) renderAlphabetInspector(activeItem);
+        }
+
+        function renderAlphabetInspector(item) {
+            const panel = document.getElementById('alphaDetailPanel');
+            const isKnown = userState.learnedAlpha[currentLang].includes(item.char);
+
+            panel.innerHTML = `
+                <div class="space-y-5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 rounded-2xl bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-5xl font-extrabold text-zinc-900 dark:text-white">
+                                ${item.char}
+                            </div>
+                            <div>
+                                <span class="text-xs font-mono uppercase text-zinc-400">${item.group}</span>
+                                <div class="text-2xl font-mono font-extrabold text-sky-500">/${item.rom}/</div>
+                                <div class="text-xs text-zinc-500 dark:text-zinc-300 mt-0.5">${item.sound}</div>
+                            </div>
+                        </div>
+                        <button onclick="speakText('${item.char}')" class="p-3.5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold shadow-lg shadow-sky-500/20 transition-all" title="Listen">
+                            🔊
+                        </button>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 space-y-1">
+                        <div class="text-[11px] font-mono uppercase font-bold text-amber-500">💡 Visual Memory Trick (Mnemonic)</div>
+                        <p class="text-sm text-zinc-800 dark:text-zinc-200 font-medium">${item.mnemonic}</p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+                        <div>
+                            <div class="text-[11px] font-mono uppercase text-zinc-400">Example Word</div>
+                            <div class="text-sm font-bold text-zinc-900 dark:text-white mt-0.5">${item.example}</div>
+                        </div>
+                        <button onclick="speakText('${item.example.split(' ')[0]}')" class="px-3 py-1.5 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-xs font-semibold">🔊 Word</button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button onclick="toggleAlphaLearned('${item.char}')" class="py-2.5 px-3 rounded-xl font-bold text-xs transition-all ${
+                            isKnown
+                                ? 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/30'
+                                : 'bg-emerald-500 hover:bg-emerald-400 text-zinc-950'
+                        }">
+                            ${isKnown ? '✓ Learned (Click to Unmark)' : '✓ Mark Letter Learned (+10 XP)'}
+                        </button>
+                        <button onclick="pinItemToNotes('${item.char} (${item.rom})', '${item.sound}', 'Mnemonic: ${item.mnemonic} | Example: ${item.example}', 'Mnemonic')" class="py-2.5 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-xs">
+                            📌 Save to My Notes
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleAlphaLearned(char) {
+            const list = userState.learnedAlpha[currentLang];
+            const idx = list.indexOf(char);
+            if (idx >= 0) {
+                list.splice(idx, 1);
+                saveState();
+            } else {
+                list.push(char);
+                addXp(10, `Learned '${char}'`);
+            }
+            renderAlphabetPage();
+        }
+
+        function markAllCurrentGroupKnown() {
+            const db = APP_DB[currentLang];
+            const groupChars = db.alphabet.filter(a => a.group === currentAlphaGroup);
+            const list = userState.learnedAlpha[currentLang];
+            let added = 0;
+            groupChars.forEach(item => {
+                if (!list.includes(item.char)) {
+                    list.push(item.char);
+                    added++;
+                }
+            });
+            if (added > 0) addXp(added * 5, `Mastered ${currentAlphaGroup}`);
+            renderAlphabetPage();
+        }
+
+        /********************************************************************
+         * 7. PAGE 3: RICH WORD LIBRARY (CATEGORIZED VOCABULARY)
+         ********************************************************************/
+        function renderWordLibrary() {
+            const db = APP_DB[currentLang];
+            document.getElementById('wordsPageTitle').textContent = `${db.flag} ${db.name} Word & Phrase Library (${db.words.length} Cards)`;
+
+            const categories = ['All', 'Essentials', 'Food & Cafe', 'Pop Culture & Slang', 'Travel & Places', 'Feelings & Vibes', 'Numbers & Actions'];
+            const pillsBox = document.getElementById('vocabCategoryPills');
+            pillsBox.innerHTML = '';
+
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                const active = cat === currentVocabCategory;
+                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    active
+                        ? 'bg-sky-500 text-zinc-950 shadow-sm'
+                        : 'bg-zinc-100 dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:border-sky-500/40'
+                }`;
+                btn.textContent = cat;
+                btn.onclick = () => {
+                    currentVocabCategory = cat;
+                    renderWordLibrary();
+                };
+                pillsBox.appendChild(btn);
+            });
+
+            const query = (document.getElementById('vocabSearchInput').value || '').trim().toLowerCase();
+            const hideRomaji = document.getElementById('vocabSelfTestToggle').checked;
+
+            const filtered = db.words.filter(w => {
+                const matchesCat = currentVocabCategory === 'All' || w.cat === currentVocabCategory;
+                const matchesQuery = !query || w.script.toLowerCase().includes(query) || w.rom.toLowerCase().includes(query) || w.en.toLowerCase().includes(query);
+                return matchesCat && matchesQuery;
+            });
+
+            const grid = document.getElementById('vocabCardsGrid');
+            grid.innerHTML = '';
+
+            filtered.forEach(w => {
+                const isLearned = userState.learnedWords[currentLang].includes(w.script);
+                const card = document.createElement('div');
+                card.className = `group hover-lift bg-white dark:bg-zinc-900 border rounded-2xl p-5 flex flex-col justify-between shadow-sm ${
+                    isLearned ? 'border-emerald-500/40 bg-emerald-500/[0.02]' : 'border-zinc-200 dark:border-zinc-800'
+                }`;
+
+                const escapedScript = w.script.replace(/'/g, "\\'");
+                const escapedEn = w.en.replace(/'/g, "\\'");
+                const escapedTip = w.tip.replace(/'/g, "\\'");
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 font-semibold">${w.cat}</span>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="speakText('${escapedScript}')" class="p-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-500 text-xs" title="Pronounce">🔊</button>
+                                <button onclick="pinItemToNotes('${escapedScript}', '${w.rom} — ${escapedEn}', '${escapedTip}', 'Pinned Word')" class="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-xs" title="Save to Notes">📌</button>
+                            </div>
+                        </div>
+
+                        <div onclick="speakText('${escapedScript}')" class="cursor-pointer text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white my-1">
+                            ${w.script}
+                        </div>
+
+                        <div class="font-mono text-xs font-bold text-sky-500 ${hideRomaji ? 'self-test-blur' : ''}">
+                            /${w.rom}/
+                        </div>
+
+                        <div class="text-base font-bold text-zinc-800 dark:text-zinc-100 mt-2">
+                            ${w.en}
+                        </div>
+
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+                            💡 ${w.tip}
+                        </p>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
+                        <button onclick="toggleWordLearned('${escapedScript}')" class="text-xs font-bold px-3 py-1.5 rounded-xl transition-all ${
+                            isLearned
+                                ? 'bg-emerald-500/15 text-emerald-500'
+                                : 'bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-500 hover:text-zinc-950 text-zinc-600 dark:text-zinc-300'
+                        }">
+                            ${isLearned ? '✓ Mastered' : '+ Mark Learned'}
+                        </button>
+                        <button onclick="loadWordIntoReader('${escapedScript}', '${escapedEn}')" class="text-xs font-mono text-zinc-400 hover:text-sky-400">
+                            X-Ray 🔬
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleWordLearned(script) {
+            const list = userState.learnedWords[currentLang];
+            const idx = list.indexOf(script);
+            if (idx >= 0) {
+                list.splice(idx, 1);
+                saveState();
+            } else {
+                list.push(script);
+                addXp(15, `Learned word "${script}"`);
+            }
+            renderWordLibrary();
+        }
+
+        function loadWordIntoReader(script, en) {
+            navigateTo('reader');
+            document.getElementById('readerTextarea').value = script;
+            document.getElementById('readerTranslationLine').textContent = `Meaning: "${en}"`;
+            renderSmartReader();
+        }
+
+        /********************************************************************
+         * 8. PAGE 4: PLAYABLE ARCADE (3 MINI-GAMES)
+         ********************************************************************/
+        function getArcadePool() {
+            const deck = document.getElementById('arcadeDeckSelect').value;
+            const db = APP_DB[currentLang];
+            if (deck === 'alphabet') {
+                return db.alphabet.map(a => ({
+                    script: a.char,
+                    match: a.rom,
+                    sub: a.sound
+                }));
+            }
+            const words = deck === 'all_words' ? db.words : db.words.filter(w => w.cat === deck);
+            return words.map(w => ({
+                script: w.script,
+                match: `${w.rom} (${w.en})`,
+                romOnly: w.rom,
+                enOnly: w.en,
+                cat: w.cat
+            }));
+        }
+
+        function selectArcadeGame(gameId) {
+            currentArcadeGame = gameId;
+            clearInterval(blitzInterval);
+
+            ['memory', 'blitz', 'builder'].forEach(id => {
+                const tab = document.getElementById(`gameTab-${id}`);
+                const stage = document.getElementById(`arcadeGame-${id}`);
+                if (id === gameId) {
+                    tab.className = 'arcade-tab flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-sky-500 text-zinc-950 shadow-sm';
+                    stage.classList.remove('hidden');
+                } else {
+                    tab.className = 'arcade-tab flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-zinc-100 dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800';
+                    stage.classList.add('hidden');
+                }
+            });
+
+            restartCurrentArcadeGame();
+        }
+
+        function restartCurrentArcadeGame() {
+            if (currentArcadeGame === 'memory') initMemoryGame();
+            if (currentArcadeGame === 'blitz') startBlitzGame();
+            if (currentArcadeGame === 'builder') nextBuilderPuzzle();
+        }
+
+        /* --- MINI-GAME 1: MEMORY MATCH --- */
+        let memoryCards = [];
+        let memoryFlipped = [];
+        let memoryMatchedCount = 0;
+        let memoryMoveCount = 0;
+        let memoryLock = false;
+
+        function initMemoryGame() {
+            const pool = [...getArcadePool()].sort(() => Math.random() - 0.5).slice(0, 6);
+            memoryCards = [];
+            pool.forEach((item, idx) => {
+                memoryCards.push({ pairId: idx, type: 'script', display: item.script, audio: item.script });
+                memoryCards.push({ pairId: idx, type: 'rom', display: item.match, audio: item.script });
+            });
+            memoryCards.sort(() => Math.random() - 0.5);
+
+            memoryFlipped = [];
+            memoryMatchedCount = 0;
+            memoryMoveCount = 0;
+            memoryLock = false;
+            document.getElementById('memoryMoves').textContent = '0';
+            document.getElementById('memoryPairs').textContent = '0 / 6';
+
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+
+            memoryCards.forEach((c, idx) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'memory-card cursor-pointer h-24 sm:h-28 select-none';
+                cardEl.dataset.idx = idx;
+                cardEl.onclick = () => flipMemoryCard(idx, cardEl);
+                cardEl.innerHTML = `
+                    <div class="memory-inner relative w-full h-full">
+                        <div class="memory-front absolute inset-0 rounded-2xl bg-zinc-100 dark:bg-zinc-950 border-2 border-zinc-200 dark:border-zinc-800 hover:border-sky-500/50 flex items-center justify-center text-2xl font-mono text-zinc-400">
+                            ?
+                        </div>
+                        <div class="memory-back absolute inset-0 rounded-2xl bg-sky-500/10 border-2 border-sky-500 flex items-center justify-center p-2 text-center">
+                            <span class="${c.type === 'script' ? 'text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white' : 'text-xs sm:text-sm font-mono font-bold text-sky-500'}">${c.display}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(cardEl);
+            });
+        }
+
+        function flipMemoryCard(idx, cardEl) {
+            if (memoryLock || cardEl.classList.contains('flipped')) return;
+            const cardData = memoryCards[idx];
+            cardEl.classList.add('flipped');
+            speakText(cardData.audio);
+            memoryFlipped.push({ idx, cardEl, cardData });
+
+            if (memoryFlipped.length === 2) {
+                memoryLock = true;
+                memoryMoveCount++;
+                document.getElementById('memoryMoves').textContent = memoryMoveCount;
+
+                const [first, second] = memoryFlipped;
+                if (first.cardData.pairId === second.cardData.pairId) {
+                    memoryMatchedCount++;
+                    document.getElementById('memoryPairs').textContent = `${memoryMatchedCount} / 6`;
+                    memoryFlipped = [];
+                    memoryLock = false;
+                    if (memoryMatchedCount === 6) {
+                        addXp(40, 'Cleared Memory Match Board!');
+                    }
+                } else {
+                    setTimeout(() => {
+                        first.cardEl.classList.remove('flipped');
+                        second.cardEl.classList.remove('flipped');
+                        memoryFlipped = [];
+                        memoryLock = false;
+                    }, 850);
+                }
+            }
+        }
+
+        /* --- MINI-GAME 2: SPEED BLITZ SURVIVAL --- */
+        let blitzLives = 3;
+        let blitzScoreVal = 0;
+        let blitzStreakVal = 0;
+        let blitzTimer = 100;
+        let blitzInterval = null;
+        let currentBlitzItem = null;
+
+        function startBlitzGame() {
+            clearInterval(blitzInterval);
+            blitzLives = 3;
+            blitzScoreVal = 0;
+            blitzStreakVal = 0;
+            updateBlitzHUD();
+            nextBlitzQuestion();
+        }
+
+        function updateBlitzHUD() {
+            document.getElementById('blitzHearts').textContent = '❤️'.repeat(Math.max(0, blitzLives)) + '🖤'.repeat(Math.max(0, 3 - blitzLives));
+            document.getElementById('blitzCombo').textContent = `${blitzStreakVal}x Streak 🔥`;
+            document.getElementById('blitzScore').textContent = `Score: ${blitzScoreVal}`;
+        }
+
+        function nextBlitzQuestion() {
+            clearInterval(blitzInterval);
+            if (blitzLives <= 0) {
+                document.getElementById('blitzPromptChar').textContent = 'Game Over!';
+                document.getElementById('blitzPromptHint').textContent = `Final Score: ${blitzScoreVal} • Click Start to play again!`;
+                document.getElementById('blitzChoicesGrid').innerHTML = '';
+                return;
+            }
+
+            const pool = getArcadePool();
+            currentBlitzItem = pool[Math.floor(Math.random() * pool.length)];
+            document.getElementById('blitzPromptChar').textContent = currentBlitzItem.script;
+            document.getElementById('blitzPromptHint').textContent = 'Pick the matching romanization / meaning:';
+
+            // Build 4 choices
+            const distractors = pool.filter(p => p.script !== currentBlitzItem.script).sort(() => Math.random() - 0.5).slice(0, 3);
+            const choices = [currentBlitzItem, ...distractors].sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('blitzChoicesGrid');
+            grid.innerHTML = '';
+            choices.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = 'p-4 rounded-2xl bg-zinc-100 dark:bg-zinc-950 hover:bg-sky-500 hover:text-zinc-950 border border-zinc-200 dark:border-zinc-800 font-mono font-bold text-xs sm:text-sm transition-all';
+                btn.textContent = c.match;
+                btn.onclick = () => checkBlitzAnswer(c.script === currentBlitzItem.script);
+                grid.appendChild(btn);
+            });
+
+            blitzTimer = 100;
+            document.getElementById('blitzTimerBar').style.width = '100%';
+            blitzInterval = setInterval(() => {
+                blitzTimer -= 1.25;
+                document.getElementById('blitzTimerBar').style.width = `${Math.max(0, blitzTimer)}%`;
+                if (blitzTimer <= 0) {
+                    clearInterval(blitzInterval);
+                    checkBlitzAnswer(false);
+                }
+            }, 100);
+        }
+
+        function checkBlitzAnswer(isCorrect) {
+            clearInterval(blitzInterval);
+            const stage = document.getElementById('blitzStageCard');
+            if (isCorrect) {
+                blitzStreakVal++;
+                blitzScoreVal += 10 * blitzStreakVal;
+                speakText(currentBlitzItem.script);
+                if (blitzStreakVal % 5 === 0) addXp(20, `${blitzStreakVal}x Blitz Streak!`);
+                stage.classList.remove('animate-pop');
+                void stage.offsetWidth;
+                stage.classList.add('animate-pop');
+            } else {
+                blitzLives--;
+                blitzStreakVal = 0;
+                stage.classList.remove('animate-shake');
+                void stage.offsetWidth;
+                stage.classList.add('animate-shake');
+            }
+            updateBlitzHUD();
+            setTimeout(nextBlitzQuestion, 450);
+        }
+
+        function speakBlitzCurrent() {
+            if (currentBlitzItem) speakText(currentBlitzItem.script);
+        }
+
+        /* --- MINI-GAME 3: WORD TILE BUILDER --- */
+        let currentBuilderWord = null;
+        let builderTargetChars = [];
+        let builderScrambled = [];
+        let builderChosen = [];
+
+        function nextBuilderPuzzle() {
+            const words = APP_DB[currentLang].words;
+            currentBuilderWord = words[Math.floor(Math.random() * words.length)];
+            const cleanChars = Array.from(currentBuilderWord.script.replace(/\s+/g, ''));
+            builderTargetChars = cleanChars;
+
+            // Add 2 extra distractor characters from alphabet
+            const extra = APP_DB[currentLang].alphabet.map(a => a.char).sort(() => Math.random() - 0.5).slice(0, 2);
+            builderScrambled = [...cleanChars, ...extra].map((ch, idx) => ({ id: idx, char: ch, used: false })).sort(() => Math.random() - 0.5);
+            builderChosen = [];
+
+            document.getElementById('builderCategoryTag').textContent = currentBuilderWord.cat;
+            document.getElementById('builderEnglishPrompt').textContent = `"${currentBuilderWord.en}"`;
+            document.getElementById('builderRomajiPrompt').textContent = `/${currentBuilderWord.rom}/`;
+
+            renderBuilderTiles();
+        }
+
+        function renderBuilderTiles() {
+            const slots = document.getElementById('builderAnswerSlots');
+            const bank = document.getElementById('builderTileBank');
+            slots.innerHTML = '';
+            bank.innerHTML = '';
+
+            builderChosen.forEach((tile, cIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-sky-500 text-zinc-950 font-extrabold text-xl sm:text-2xl shadow-md animate-pop';
+                btn.textContent = tile.char;
+                btn.onclick = () => {
+                    tile.used = false;
+                    builderChosen.splice(cIdx, 1);
+                    renderBuilderTiles();
+                };
+                slots.appendChild(btn);
+            });
+
+            builderScrambled.forEach(tile => {
+                const btn = document.createElement('button');
+                btn.disabled = tile.used;
+                btn.className = `w-12 h-12 sm:w-14 sm:h-14 rounded-2xl font-extrabold text-xl sm:text-2xl border transition-all ${
+                    tile.used
+                        ? 'opacity-20 bg-zinc-200 dark:bg-zinc-900 border-zinc-300 dark:border-zinc-800 cursor-not-allowed'
+                        : 'bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-700 hover:border-sky-500 text-zinc-900 dark:text-white shadow-sm'
+                }`;
+                btn.textContent = tile.char;
+                btn.onclick = () => {
+                    tile.used = true;
+                    builderChosen.push(tile);
+                    speakText(tile.char);
+                    renderBuilderTiles();
+                    checkBuilderCompletion();
+                };
+                bank.appendChild(btn);
+            });
+        }
+
+        function checkBuilderCompletion() {
+            if (builderChosen.length === builderTargetChars.length) {
+                const attempt = builderChosen.map(t => t.char).join('');
+                const goal = builderTargetChars.join('');
+                if (attempt === goal) {
+                    speakText(currentBuilderWord.script);
+                    addXp(25, `Built "${currentBuilderWord.script}"!`);
+                    setTimeout(nextBuilderPuzzle, 900);
+                } else {
+                    const slots = document.getElementById('builderAnswerSlots');
+                    slots.classList.remove('animate-shake');
+                    void slots.offsetWidth;
+                    slots.classList.add('animate-shake');
+                }
+            }
+        }
+
+        function speakBuilderTarget() {
+            if (currentBuilderWord) speakText(currentBuilderWord.script);
+        }
+
+        /********************************************************************
+         * 9. PAGE 5: SMART ROMANIZER & MINI-STORY READER
+         ********************************************************************/
+        let currentReaderTokens = [];
+
+        function renderReaderPageSetup() {
+            const db = APP_DB[currentLang];
+            const pills = document.getElementById('readerStoryPills');
+            pills.innerHTML = '';
+
+            db.stories.forEach((st, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'px-3 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-sky-500 hover:text-zinc-950 text-xs font-semibold transition-all';
+                btn.textContent = st.label;
+                btn.onclick = () => {
+                    document.getElementById('readerTextarea').value = st.text;
+                    document.getElementById('readerTranslationLine').textContent = st.translation;
+                    selectedReaderTokenIndex = 0;
+                    renderSmartReader();
+                };
+                pills.appendChild(btn);
+            });
+
+            // Load first story if empty or switched language
+            const firstStory = db.stories[0];
+            document.getElementById('readerTextarea').value = firstStory.text;
+            document.getElementById('readerTranslationLine').textContent = firstStory.translation;
+            selectedReaderTokenIndex = 0;
+            renderSmartReader();
+        }
+
+        function renderSmartReader() {
+            const text = document.getElementById('readerTextarea').value || '';
+            const applyRules = document.getElementById('readerRulesToggle').checked;
+            const blurKnown = document.getElementById('readerBlurKnownToggle').checked;
+
+            currentReaderTokens = analyzeReaderText(text, applyRules);
+            const canvas = document.getElementById('readerTokenCanvas');
+            canvas.innerHTML = '';
+
+            let totalScript = 0;
+            let knownCount = 0;
+
+            currentReaderTokens.forEach((tok, idx) => {
+                if (tok.char === ' ') {
+                    const sp = document.createElement('div');
+                    sp.className = 'w-4 h-12';
+                    canvas.appendChild(sp);
+                    return;
+                }
+
+                const isKnown = userState.learnedAlpha[currentLang].includes(tok.char) ||
+                                userState.learnedAlpha[currentLang].includes(tok.char.toUpperCase());
+                if (tok.isScript) {
+                    totalScript++;
+                    if (isKnown) knownCount++;
+                }
+
+                const btn = document.createElement('button');
+                const isSelected = idx === selectedReaderTokenIndex;
+                const hasShift = tok.ruleNote && tok.phoneticRom !== tok.literalRom;
+
+                btn.className = `group hover-lift px-3 py-2.5 rounded-xl border text-center flex flex-col items-center min-w-[52px] transition-all ${
+                    isSelected
+                        ? 'bg-sky-500/10 border-sky-500 ring-2 ring-sky-500/30'
+                        : hasShift
+                        ? 'bg-amber-500/10 border-amber-500/40'
+                        : 'bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800'
+                }`;
+                btn.onclick = () => {
+                    selectedReaderTokenIndex = idx;
+                    speakText(tok.char);
+                    renderSmartReader();
+                };
+
+                const blurClass = (blurKnown && isKnown) ? 'self-test-blur' : '';
+                btn.innerHTML = `
+                    <span class="font-mono text-xs font-bold ${hasShift ? 'text-amber-500' : 'text-sky-500'} ${blurClass}">${tok.phoneticRom}</span>
+                    <span class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white my-1">${tok.char}</span>
+                    <span class="text-[10px] font-mono text-zinc-400">${tok.type === 'Hangul' ? `${tok.choChar}${tok.jungChar}${tok.jongChar || '·'}` : (tok.type || '•')}</span>
+                `;
+                canvas.appendChild(btn);
+            });
+
+            const pct = totalScript > 0 ? Math.round((knownCount / totalScript) * 100) : 0;
+            document.getElementById('readerMasteryStat').textContent = `${pct}% Known (${knownCount}/${totalScript})`;
+
+            const activeTok = currentReaderTokens[selectedReaderTokenIndex] || currentReaderTokens.find(t => t.char !== ' ');
+            if (activeTok) renderReaderInspector(activeTok);
+        }
+
+        function renderReaderInspector(tok) {
+            const box = document.getElementById('readerInspectorBox');
+            let breakdownHtml = '';
+            if (tok.type === 'Hangul') {
+                breakdownHtml = `
+                    <div class="grid grid-cols-3 gap-2 text-center pt-2">
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+                            <div class="text-xl font-bold text-sky-500">${tok.choChar}</div>
+                            <div class="text-[10px] font-mono text-zinc-400">Initial (${tok.choRom})</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+                            <div class="text-xl font-bold text-fuchsia-500">${tok.jungChar}</div>
+                            <div class="text-[10px] font-mono text-zinc-400">Vowel (${tok.jungRom})</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+                            <div class="text-xl font-bold text-emerald-500">${tok.jongChar || '∅'}</div>
+                            <div class="text-[10px] font-mono text-zinc-400">Final (${tok.jongRom})</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            box.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono uppercase tracking-wider text-sky-500 font-bold">Syllable X-Ray</span>
+                        <button onclick="speakText('${tok.char}')" class="px-3 py-1 rounded-lg bg-sky-500/15 text-sky-500 text-xs font-bold">🔊 Listen</button>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+                        <div class="text-5xl font-extrabold text-zinc-900 dark:text-white">${tok.char}</div>
+                        <div>
+                            <div class="text-xs text-zinc-400 font-mono">Pronounced</div>
+                            <div class="text-2xl font-mono font-bold text-sky-500">/${tok.phoneticRom}/</div>
+                        </div>
+                    </div>
+                    ${tok.ruleNote ? `<div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-600 dark:text-amber-300">⚡ ${tok.ruleNote}</div>` : ''}
+                    ${breakdownHtml}
+                    <button onclick="pinItemToNotes('${tok.char} (${tok.phoneticRom})', 'From Smart Reader', '${tok.ruleNote || 'Practiced in Smart Reader'}', 'Grammar / Sound')" class="w-full py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-sky-500 hover:text-zinc-950 font-bold text-xs transition-all">
+                        📌 Save Syllable to My Notes
+                    </button>
+                </div>
+            `;
+        }
+
+        function speakFullReaderText() {
+            speakText(document.getElementById('readerTextarea').value);
+        }
+
+        /********************************************************************
+         * 10. PAGE 6: MY STUDY NOTES & FLASHCARD NOTEBOOK
+         ********************************************************************/
+        let fcIndex = 0;
+
+        function pinItemToNotes(title, subtitle, detail, tag = 'Pinned Word') {
+            userState.notes.unshift({
+                id: 'n_' + Date.now(),
+                lang: currentLang,
+                tag,
+                title: `${title} • ${subtitle}`,
+                content: detail
+            });
+            addXp(10, 'Pinned to Notebook!');
+        }
+
+        function addCustomNoteFromPage() {
+            const titleEl = document.getElementById('newNoteTitle');
+            const contentEl = document.getElementById('newNoteContent');
+            const tag = document.getElementById('newNoteTag').value;
+            const lang = document.getElementById('newNoteLang').value;
+
+            if (!titleEl.value.trim() && !contentEl.value.trim()) {
+                showToast('Please enter a title or note content!', 'amber');
+                return;
+            }
+
+            userState.notes.unshift({
+                id: 'n_' + Date.now(),
+                lang,
+                tag,
+                title: titleEl.value.trim() || 'Study Note',
+                content: contentEl.value.trim()
+            });
+
+            titleEl.value = '';
+            contentEl.value = '';
+            addXp(15, 'Created Personal Note');
+            renderNotesPage();
+        }
+
+        function deleteNote(id) {
+            userState.notes = userState.notes.filter(n => n.id !== id);
+            saveState();
+            renderNotesPage();
+        }
+
+        function setNotesFilter(filter) {
+            currentNotesFilter = filter;
+            document.querySelectorAll('.nf-btn').forEach(btn => {
+                if (btn.dataset.nf === filter) {
+                    btn.className = 'nf-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-500 text-zinc-950';
+                } else {
+                    btn.className = 'nf-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300';
+                }
+            });
+            renderNotesPage();
+        }
+
+        function renderNotesPage() {
+            const grid = document.getElementById('savedNotesGrid');
+            grid.innerHTML = '';
+
+            const filtered = userState.notes.filter(n => currentNotesFilter === 'all' || n.lang === currentNotesFilter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 p-8 rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-800 text-center text-sm text-zinc-400">No notes in this filter yet. Pin words from the Word Library or create a note on the left!</div>`;
+                return;
+            }
+
+            const flags = { ko: '🇰🇷', ja: '🇯🇵', ru: '🇷🇺' };
+            filtered.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-sm';
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-sky-500/10 text-sky-500">${flags[note.lang] || '🌐'} ${note.tag}</span>
+                            <button onclick="deleteNote('${note.id}')" class="text-xs text-zinc-400 hover:text-rose-500">✕ Delete</button>
+                        </div>
+                        <h4 class="font-bold text-base text-zinc-900 dark:text-white">${note.title}</h4>
+                        <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-2 whitespace-pre-line leading-relaxed">${note.content}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleNotesFlashcardMode() {
+            const stage = document.getElementById('notesFlashcardStage');
+            stage.classList.toggle('hidden');
+            fcIndex = 0;
+            renderCurrentNoteFlashcard();
+        }
+
+        function renderCurrentNoteFlashcard() {
+            const pool = userState.notes;
+            if (pool.length === 0) return;
+            fcIndex = (fcIndex + pool.length) % pool.length;
+            const item = pool[fcIndex];
+            document.getElementById('fcCounter').textContent = `Saved Note ${fcIndex + 1} of ${pool.length}`;
+            document.getElementById('fcFrontText').textContent = item.title;
+            const back = document.getElementById('fcBackText');
+            back.textContent = item.content;
+            back.classList.add('hidden');
+        }
+
+        function flipNoteFlashcard() {
+            document.getElementById('fcBackText').classList.toggle('hidden');
+        }
+
+        function stepNoteFlashcard(dir) {
+            fcIndex += dir;
+            renderCurrentNoteFlashcard();
+        }
+
+        function speakCurrentFlashcard() {
+            const item = userState.notes[fcIndex];
+            if (item) speakText(item.title.split('•')[0]);
+        }
+
+        /********************************************************************
+         * 11. NATIVE WEB SPEECH API AUDIO
+         ********************************************************************/
+        function speakText(text) {
+            if (!('speechSynthesis' in window) || !text) return;
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = APP_DB[currentLang].ttsLang;
+            utter.rate = 0.88;
+            window.speechSynthesis.speak(utter);
+        }
+
+        // Initialize App on Load
+        window.onload = () => {
+            loadState();
+            updateHeaderStats();
+            switchLanguage('ko');
+        };
+    </script>
+</body>
+</html>
